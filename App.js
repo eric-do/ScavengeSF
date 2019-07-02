@@ -16,7 +16,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-      fetch(`http://localhost:3000/landmarks?id=${this.state.id}`)
+      fetch(`${LOCALHOST}landmarks?id=${this.state.id}`)
         .then(data => data.json())
         .then(landmarks => {
           this.setState({ landmarks })
@@ -28,7 +28,6 @@ class App extends React.Component {
     console.log(this);
     return (
       <View style={styles.container}>
-        {/* <LandmarkList landmarks={this.state.landmarks}/> */}
         <View style={styles.container}>
           <FlatList
             data={this.state.landmarks}
@@ -36,10 +35,10 @@ class App extends React.Component {
             renderItem={({ item }) => (
               <View>
                 <Text style={styles.container}
-                      onPress={() => this.props.navigation.navigate('Landmark')} >
+                      onPress={() => this.props.navigation.navigate('Landmark', { id: item.id })} >
                   {item.name}
                 </Text>    
-                <TouchableHighlight onPress={() => this.props.navigation.navigate('Landmark')} >
+                <TouchableHighlight onPress={() => this.props.navigation.navigate('Landmark', { id: item.id })} >
                   <Image style={styles.image}
                          source={{ uri: `${LOCALHOST}${item.url}` }}
                   />
