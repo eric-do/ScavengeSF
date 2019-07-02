@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableHighlight } from 'react-native';
 import LandmarkList from './screens/LandmarkList.js';
 import LandmarkView from './screens/LandmarkView.js';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
@@ -38,10 +38,12 @@ class App extends React.Component {
                 <Text style={styles.container}
                       onPress={() => this.props.navigation.navigate('Landmark')} >
                   {item.name}
-                </Text>                    
-                <Image style={styles.image}
-                       source={{ uri: `${LOCALHOST}${item.url}` }}
-                       onPress={() => this.props.navigation.navigate('Landmark')} />
+                </Text>    
+                <TouchableHighlight onPress={() => this.props.navigation.navigate('Landmark')} >
+                  <Image style={styles.image}
+                         source={{ uri: `${LOCALHOST}${item.url}` }}
+                  />
+                </TouchableHighlight>                       
               </View>
             )}
           />
