@@ -21,14 +21,15 @@ class LandmarkView extends React.Component {
 
   render() {
     const questions = this.state.questions;
-
+    console.log(this.props);
     return (
       <View>
         <FlatList
           data={questions}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => ( 
-            <Text key={item.id}>{item.text}</Text>
+            <Text key={item.id}
+                  onPress={() => this.props.navigation.navigate('Answers', { id: item.id })}>{item.text}</Text>
           )}
         />
       </View>

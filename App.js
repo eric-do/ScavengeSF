@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableHighlight } from 'react-native';
 import LandmarkList from './screens/LandmarkList.js';
 import LandmarkView from './screens/LandmarkView.js';
+import AnswerList from './screens/AnswerList.js';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 const LOCALHOST = 'http://localhost:3000/';
@@ -18,9 +19,7 @@ class App extends React.Component {
   componentDidMount() {
       fetch(`${LOCALHOST}landmarks?id=${this.state.id}`)
         .then(data => data.json())
-        .then(landmarks => {
-          this.setState({ landmarks })
-        })
+        .then(landmarks => { this.setState({ landmarks })})
         .catch(e => console.error('Couldn\'t get data', e));
   }
 
@@ -67,7 +66,8 @@ const styles = StyleSheet.create({
 
 const AppNavigator = createStackNavigator({
   Home: App,
-  Landmark: LandmarkView
+  Landmark: LandmarkView,
+  Answers: AnswerList
 })
 
 export default createAppContainer(AppNavigator);

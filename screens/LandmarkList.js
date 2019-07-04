@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 
 export default LandmarkList = ({ landmarks }) => {
   //console.log(this.props.navigation);
