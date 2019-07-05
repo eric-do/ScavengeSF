@@ -22,7 +22,6 @@ class LandmarkView extends React.Component {
 
   render() {
     const questions = this.state.questions;
-    console.log(this.props);
     return (
       <View>
         <FlatList

@@ -4,27 +4,24 @@ import { StyleSheet,
          View, 
          FlatList, 
          TouchableHighlight,
-         Image } from 'react-native';
+         ImageBackground } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
 
 export default LandmarkList = ({ landmarks, navigation }) => {
-  console.log(navigation);
-
   return (
     <View style={styles.container}>
       <FlatList
         data={landmarks}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <View>
-            <Text style={styles.container}
-                  onPress={() => navigation.navigate('Landmark', { id: item.id })} >
-              {item.name}
-            </Text>    
+          <View>  
             <TouchableHighlight onPress={() => navigation.navigate('Landmark', { id: item.id })} >
-              <Image style={styles.image}
-                     source={{ uri: `${SERVER}${item.url}` }}
-              />
+              <ImageBackground style={styles.image}
+                     source={{ uri: `${SERVER}${item.url}` }} >
+                <View style={styles.thumbnailOverlay}>
+                  <Text style={styles.thumbnailText}>{item.name}</Text>
+                </View>
+              </ImageBackground>
             </TouchableHighlight>                       
           </View>
         )}
@@ -46,5 +43,19 @@ const styles = StyleSheet.create({
   image: {
     width: 400,
     height: 200
+  },
+  thumbnailOverlay: {
+    position: 'absolute', 
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  thumbnailText: {
+    color: 'white',
+    fontSize: 30
   }
 })
