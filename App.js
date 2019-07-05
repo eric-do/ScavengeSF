@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableHighlight } from 'react-native';
 import LandmarkList from './screens/LandmarkList.js';
-import LandmarkView from './screens/LandmarkView.js';
+import QuestionList from './screens/QuestionList.js';
 import AnswerList from './screens/AnswerList.js';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { SERVER } from 'react-native-dotenv';
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 const AppNavigator = createStackNavigator({
   Home: App,
-  Landmark: LandmarkView,
+  Questions: QuestionList,
   Answers: AnswerList
 })
 

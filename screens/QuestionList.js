@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
 
-class LandmarkView extends React.Component {
+class QuestionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,4 +37,4 @@ class LandmarkView extends React.Component {
   }
 }
 
-export default LandmarkView;
+export default QuestionList;
