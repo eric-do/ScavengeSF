@@ -4,6 +4,8 @@ import LandmarkList from './screens/LandmarkList.js';
 import LandmarkView from './screens/LandmarkView.js';
 import AnswerList from './screens/AnswerList.js';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { SERVER } from 'react-native-dotenv';
+
 
 export const LOCALHOST = 'http://localhost:3000/';
 
