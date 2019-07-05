@@ -5,8 +5,7 @@ import { StyleSheet,
          FlatList, 
          TouchableHighlight,
          Image } from 'react-native';
-
-const LOCALHOST = 'http://localhost:3000/';
+import { SERVER } from 'react-native-dotenv';
 
 export default LandmarkList = ({ landmarks, navigation }) => {
   console.log(navigation);
@@ -24,7 +23,7 @@ export default LandmarkList = ({ landmarks, navigation }) => {
             </Text>    
             <TouchableHighlight onPress={() => navigation.navigate('Landmark', { id: item.id })} >
               <Image style={styles.image}
-                     source={{ uri: `${LOCALHOST}${item.url}` }}
+                     source={{ uri: `${SERVER}${item.url}` }}
               />
             </TouchableHighlight>                       
           </View>

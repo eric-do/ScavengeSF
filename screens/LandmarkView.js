@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { SERVER } from 'react-native-dotenv';
 
 class LandmarkView extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class LandmarkView extends React.Component {
     const { navigation } = this.props;
     const id = navigation.getParam('id', 1);
 
-    fetch(`http://localhost:3000/questions?id=${id}`)
+    fetch(`${SERVER}questions?id=${id}`)
       .then(response => response.json())
       .then(questions => this.setState({ questions }))
       .catch(e => console.error('Could not get data', e));

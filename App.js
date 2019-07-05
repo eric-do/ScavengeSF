@@ -6,9 +6,6 @@ import AnswerList from './screens/AnswerList.js';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { SERVER } from 'react-native-dotenv';
 
-
-export const LOCALHOST = 'http://localhost:3000/';
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +16,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-      fetch(`${LOCALHOST}landmarks?id=${this.state.id}`)
+      fetch(`${SERVER}landmarks?id=${this.state.id}`)
         .then(data => data.json())
         .then(landmarks => { this.setState({ landmarks })})
         .catch(e => console.error('Couldn\'t get data', e));

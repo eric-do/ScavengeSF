@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { SERVER } from 'react-native-dotenv';
 
 class AnswerList extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class AnswerList extends React.Component {
     const { navigation } = this.props;
     const id = navigation.getParam('id', 1);
 
-    fetch(`http://localhost:3000/answers?id=${id}`)
+    fetch(`${SERVER}answers?id=${id}`)
       .then(results => results.json())
       .then(answers => this.setState({ answers }))
       .catch(e => console.error(`Couldn't get data`, e));
