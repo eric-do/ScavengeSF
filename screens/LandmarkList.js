@@ -1,21 +1,37 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, 
+         Text, 
+         View, 
+         FlatList, 
+         TouchableHighlight,
+         Image } from 'react-native';
 
-export default LandmarkList = ({ landmarks }) => {
-  //console.log(this.props.navigation);
+const LOCALHOST = 'http://localhost:3000/';
+
+export default LandmarkList = ({ landmarks, navigation }) => {
+  console.log(navigation);
+
   return (
-  <View style={styles.container}>
-    <FlatList
-      data={landmarks}
-      keyExtractor={item => item.id.toString()}
-      renderItem={({ item }) => (
-        <Text style={styles.item}
-              onPress={() => console.log(this)}>
-          {item.name}
-        </Text>
-      )}
-    />
-  </View>);
+    <View style={styles.container}>
+      <FlatList
+        data={landmarks}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => (
+          <View>
+            <Text style={styles.container}
+                  onPress={() => navigation.navigate('Landmark', { id: item.id })} >
+              {item.name}
+            </Text>    
+            <TouchableHighlight onPress={() => navigation.navigate('Landmark', { id: item.id })} >
+              <Image style={styles.image}
+                     source={{ uri: `${LOCALHOST}${item.url}` }}
+              />
+            </TouchableHighlight>                       
+          </View>
+        )}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -27,5 +43,9 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44
+  },
+  image: {
+    width: 400,
+    height: 200
   }
 })

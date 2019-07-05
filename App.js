@@ -5,7 +5,7 @@ import LandmarkView from './screens/LandmarkView.js';
 import AnswerList from './screens/AnswerList.js';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-const LOCALHOST = 'http://localhost:3000/';
+export const LOCALHOST = 'http://localhost:3000/';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,28 +24,9 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this);
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
-          <FlatList
-            data={this.state.landmarks}
-            keyExtractor={item => item.id.toString()}
-            renderItem={({ item }) => (
-              <View>
-                <Text style={styles.container}
-                      onPress={() => this.props.navigation.navigate('Landmark', { id: item.id })} >
-                  {item.name}
-                </Text>    
-                <TouchableHighlight onPress={() => this.props.navigation.navigate('Landmark', { id: item.id })} >
-                  <Image style={styles.image}
-                         source={{ uri: `${LOCALHOST}${item.url}` }}
-                  />
-                </TouchableHighlight>                       
-              </View>
-            )}
-          />
-      </View>
+        <LandmarkList landmarks={this.state.landmarks} navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -57,6 +38,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44
   },
   image: {
     width: 400,

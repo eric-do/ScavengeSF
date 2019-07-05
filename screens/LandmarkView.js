@@ -11,7 +11,7 @@ class LandmarkView extends React.Component {
 
   componentDidMount() {
     const { navigation } = this.props;
-    const id = navigation.getParam('id', 100);
+    const id = navigation.getParam('id', 1);
 
     fetch(`http://localhost:3000/questions?id=${id}`)
       .then(response => response.json())
