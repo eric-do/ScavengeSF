@@ -29,7 +29,7 @@ class QuestionList extends React.Component {
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => ( 
             <Text key={item.id}
-                  onPress={() => this.props.navigation.navigate('Answers', { id: item.id })}>{item.text}</Text>
+                  onPress={() => this.props.navigation.navigate('Answers', { question: item })}>{item.text}</Text>
           )}
         />
       </View>
