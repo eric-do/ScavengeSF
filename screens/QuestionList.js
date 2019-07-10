@@ -23,7 +23,7 @@ class QuestionList extends React.Component {
   render() {
     const questions = this.state.questions;
     return (
-      <View>
+      <View style={styles.questions}>
         <FlatList
           data={questions}
           keyExtractor={item => item.id.toString()}
@@ -36,5 +36,11 @@ class QuestionList extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  questions: {
+    paddingTop: 15
+  }
+});
 
 export default QuestionList;

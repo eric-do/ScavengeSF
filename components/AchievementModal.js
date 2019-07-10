@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Button } from 'react-native';
+import Modal from 'react-native-modal';
 
 /**
  * Component to display an achievement modal 
@@ -16,7 +17,6 @@ class AchievementModal extends React.Component {
   }
 
   handleHideModal() {
-    console.log('Making call to hide modal');
     this.props.handleModalVisibility(false);
   }
 
@@ -24,35 +24,51 @@ class AchievementModal extends React.Component {
     const achievement = this.props.achievement;
     const modalVisible = this.props.visible;
     return (
-    <View style={styles.modalContainer} >
       <Modal 
-        animation="slide"
-        transparent={false}
-        visible={modalVisible}
-        onRequestClose={this.handleHideModal}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        hasBackdrop={true}
+        backdropColor="black"
+        backdropOpacity={0.7}
+        isVisible={modalVisible}
+        onBackdropPress={this.handleHideModal}
         >
           <View style={styles.modalContent}>
-            <View>
-              <Text>{achievement ? achievement.name : null}</Text>
-              <TouchableHighlight
-                onPress={this.handleHideModal}>
-                  <Text>Close</Text>
+
+              <Text style={styles.title}>
+                {achievement ? achievement.name : null}
+              </Text>
+
+              <Text style={styles.description}>
+                {achievement ? achievement.description : null}
+              </Text>
+
+              <TouchableHighlight onPress={this.handleHideModal}>
+                  <Button
+                    onPress={this.handleHideModal}
+                    title="Dismiss"
+                    color="blue"
+                    accessibilityLabel="Dismiss this notification"
+                  />
               </TouchableHighlight>
-            </View>
+
           </View>
       </Modal>
-    </View>
     );
   }
 }
 
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    paddingTop: 22
-  },
   modalContent: {
-    paddingTop: 22
+   backgroundColor: 'white',
+   alignItems: 'center'
+  },
+  title: {
+    fontSize: 18,
+  },
+  description: {
+    fontSize: 12,
   }
 });
 

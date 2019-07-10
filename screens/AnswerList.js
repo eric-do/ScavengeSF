@@ -10,14 +10,14 @@ class AnswerList extends React.Component {
       answers: [],
       question: {},
       modalVisible: false,
-      achievement: null
+      achievement: null,
+      correct: null
     }
     this.handleQuestionAttempt = this.handleQuestionAttempt.bind(this);
     this.handleModalVisibility = this.handleModalVisibility.bind(this);
   }
 
   handleModalVisibility(modalVisible) {
-    console.log('Toggling modal display');
     this.setState({ modalVisible });
   }
 
@@ -41,14 +41,12 @@ class AnswerList extends React.Component {
       fetch(`${SERVER}questions/`, options)
         .then(response => response.json())
         .then(achievement => { 
-          //{id: 2, name: "SF Explorer", description: "Answer 5 questions about San Francisco", count: 5}
           console.log(achievement);
           this.setState({ achievement, modalVisible: true });
 
         })
         .catch(e => console.error('request failed', e));
     }
-
     this.setState({ correct: correct });
   }
 
@@ -69,7 +67,7 @@ class AnswerList extends React.Component {
     const answers = this.state.answers;
 
     return (
-      <View>
+      <View style={styles.answers}>
         <AchievementModal 
           visible={this.state.modalVisible} 
           handleModalVisibility={this.handleModalVisibility}
@@ -85,7 +83,12 @@ class AnswerList extends React.Component {
       </View>
     );
   }
-
 }
+
+const styles = StyleSheet.create({
+  answers: {
+    paddingTop: 15
+  }
+});
 
 export default AnswerList;
