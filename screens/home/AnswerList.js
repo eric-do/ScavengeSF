@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
-import AchievementModal from '../components/AchievementModal'
+import AchievementModal from '../../components/AchievementModal'
 
 class AnswerList extends React.Component {
   constructor(props) {
