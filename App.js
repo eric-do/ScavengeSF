@@ -1,10 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, View} from 'react-native';
+import { createStackNavigator, 
+         createAppContainer, 
+         createBottomTabNavigator } from 'react-navigation';
+import { SERVER } from 'react-native-dotenv';
 import LandmarkList from './screens/LandmarkList.js';
 import QuestionList from './screens/QuestionList.js';
 import AnswerList from './screens/AnswerList.js';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import { SERVER } from 'react-native-dotenv';
+import AchievementList from './screens/AchievementList.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -49,10 +52,23 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppNavigator = createStackNavigator({
+const HomeStack = createStackNavigator({
   Home: App,
   Questions: QuestionList,
   Answers: AnswerList
-})
+},
+{
+  initialRouteName: "Home"
+});
 
-export default createAppContainer(AppNavigator);
+const AchievementStack = createStackNavigator({
+  Achievements: AchievementList
+},
+{
+  initialRouteName: "Achievements"
+});
+
+export default createAppContainer(createBottomTabNavigator({
+  Home: HomeStack,
+  Achievements: AchievementStack  
+}));

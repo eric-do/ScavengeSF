@@ -17,6 +17,19 @@ class AnswerList extends React.Component {
     this.handleModalVisibility = this.handleModalVisibility.bind(this);
   }
 
+  componentDidMount() {
+    const { navigation } = this.props;
+    const question = navigation.getParam('question', null);
+    const id = question.id;
+
+    this.setState({ question });
+
+    fetch(`${SERVER}answers?id=${id}`)
+      .then(results => results.json())
+      .then(answers => this.setState({ answers }))
+      .catch(e => console.error(`Couldn't get data`, e));
+  }
+
   handleModalVisibility(modalVisible) {
     this.setState({ modalVisible });
   }
@@ -48,19 +61,6 @@ class AnswerList extends React.Component {
         .catch(e => console.error('request failed', e));
     }
     this.setState({ correct: correct });
-  }
-
-  componentDidMount() {
-    const { navigation } = this.props;
-    const question = navigation.getParam('question', null);
-    const id = question.id;
-
-    this.setState({ question });
-
-    fetch(`${SERVER}answers?id=${id}`)
-      .then(results => results.json())
-      .then(answers => this.setState({ answers }))
-      .catch(e => console.error(`Couldn't get data`, e));
   }
 
   render() {
