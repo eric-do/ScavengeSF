@@ -52,11 +52,11 @@ class AnswerList extends React.Component {
       // Display achievement if one was earned
       console.log('Correct answer. Posting to DB.')
       fetch(`${SERVER}questions/`, options)
-        .then(response => response.json())
-        .then(achievement => { 
-          console.log(achievement);
-          this.setState({ achievement, modalVisible: true });
-
+        .then(response => response.text())
+        .then(data => { 
+          const achievement = data ? JSON.parse(data) : null;
+          const modalVisible = achievement ? true : false;
+          this.setState({ achievement, modalVisible });
         })
         .catch(e => console.error('request failed', e));
     }

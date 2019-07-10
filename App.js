@@ -4,10 +4,10 @@ import { createStackNavigator,
          createAppContainer, 
          createBottomTabNavigator } from 'react-navigation';
 import { SERVER } from 'react-native-dotenv';
-import LandmarkList from './screens/home/LandmarkList.js';
-import QuestionList from './screens/home/QuestionList.js';
-import AnswerList from './screens/home/AnswerList.js';
-import AchievementList from './screens/achievements/AchievementList.js';
+import LandmarkList from './screens/Home/LandmarkList.js';
+import QuestionList from './screens/Home/QuestionList.js';
+import AnswerList from './screens/Home/AnswerList.js';
+import AchievementList from './screens/Achievements/AchievementList.js';
 
 class App extends React.Component {
   constructor(props) {

@@ -26,9 +26,9 @@ class AchievementList extends React.Component {
           data={achievements}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
-            <View>
-              <Text>{item.name}</Text>
-              <Text>{item.description}</Text>
+            <View style={styles.achievements}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.description}>{item.description}</Text>
             </View>
           )}
         />
@@ -36,5 +36,17 @@ class AchievementList extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  achievements: {
+   alignItems: 'center'
+  },
+  name: {
+    fontSize: 18,
+  },
+  description: {
+    fontSize: 12,
+  }
+});
 
 export default AchievementList;
