@@ -1,15 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
+import AchievementModal from '../components/AchievementModal'
 
 class AnswerList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       answers: [],
-      question: {}
+      question: {},
+      modalVisible: false,
+      achievement: null
     }
     this.handleQuestionAttempt = this.handleQuestionAttempt.bind(this);
+    this.handleModalVisibility = this.handleModalVisibility.bind(this);
+  }
+
+  handleModalVisibility(modalVisible) {
+    console.log('Toggling modal display');
+    this.setState({ modalVisible });
   }
 
   handleQuestionAttempt(answer) {
@@ -25,10 +34,18 @@ class AnswerList extends React.Component {
     }
 
     if (correct) {
+      // Display confirmation the answer is correct
+      // Call server with user's progress
+      // Display achievement if one was earned
       console.log('Correct answer. Posting to DB.')
       fetch(`${SERVER}questions/`, options)
         .then(response => response.json())
-        .then(results => { console.log(results)})
+        .then(achievement => { 
+          //{id: 2, name: "SF Explorer", description: "Answer 5 questions about San Francisco", count: 5}
+          console.log(achievement);
+          this.setState({ achievement, modalVisible: true });
+
+        })
         .catch(e => console.error('request failed', e));
     }
 
@@ -53,6 +70,10 @@ class AnswerList extends React.Component {
 
     return (
       <View>
+        <AchievementModal 
+          visible={this.state.modalVisible} 
+          handleModalVisibility={this.handleModalVisibility}
+          achievement={this.state.achievement}/>
         <FlatList 
           data={answers}
           keyExtractor={item => item.id.toString()}
