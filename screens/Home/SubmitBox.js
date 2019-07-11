@@ -10,7 +10,7 @@ export default SubmitBox = ({correct, handleQuestionAttempt}) => (
     null ]}>
     <TouchableOpacity onPress={handleQuestionAttempt}>
       <View style={[styles.button, correct === false ? styles.incorrectButton : styles.activeButton ]} >
-        <Text style={{color: 'white'}}>{correct === null ? 'Check' : 'Continue'}</Text>
+        <Text style={{color: 'white'}}>{correct === null ? 'CHECK' : 'CONTINUE'}</Text>
       </View>
     </TouchableOpacity>
   </View>

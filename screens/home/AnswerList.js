@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 import { SERVER } from 'react-native-dotenv';
 import AchievementModal from '../../components/AchievementModal';
 import SubmitBox from './SubmitBox.js';
+import OptionButton from './OptionButton.js';
 
 class AnswerList extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class AnswerList extends React.Component {
     }
     this.handleQuestionAttempt = this.handleQuestionAttempt.bind(this);
     this.handleModalVisibility = this.handleModalVisibility.bind(this);
+    this.setAnswer = this.setAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -32,11 +34,13 @@ class AnswerList extends React.Component {
       .catch(e => console.error(`Couldn't get data`, e));
   }
 
-  handleModalVisibility(modalVisible) {
-    this.setState({ modalVisible });
+  setAnswer(answer) {
+    console.log('Setting answer state to ' + answer.id + ': ' + answer.text)
+    this.setState({ answer }, console.log(this.state.answer));
   }
 
   handleQuestionAttempt() {
+    console.log(this.state.answer);
     const correct = this.state.answer ? this.state.answer.correct : false;
     const question = this.state.question;
 
@@ -61,6 +65,10 @@ class AnswerList extends React.Component {
     this.setState({ correct: correct });
   }
 
+  handleModalVisibility(modalVisible) {
+    this.setState({ modalVisible });
+  }
+
   render() {
     const answers = this.state.answers;
     const correct = this.state.correct;
@@ -76,8 +84,10 @@ class AnswerList extends React.Component {
             data={answers}
             keyExtractor={item => item.id.toString()}
             renderItem={({ item }) => (
-              <Text key={item.id}
-                    onPress={() => this.setState({ answer: item})}>{item.text}</Text>
+              <OptionButton key={item.id}
+                            answer={item} 
+                            setAnswer={this.setAnswer} 
+                            activeAnswer={this.state.answer} />
             )}
           />
         </View>
