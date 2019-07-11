@@ -4,26 +4,17 @@ import { View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 class OptionButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      active: false
-    }
   }
 
   toggleButton() {
-    const active = !this.state.active;
     this.props.setAnswer(this.props.answer);
-    this.setState({ active });
   }
 
   render() {
-    console.log('Active answer');
-    console.log(this.props.activeAnswer);
-
-    const active = this.props.activeAnswer && this.props.activeAnswer.id === this.props.answer.id ? true : false;
     return (
       <TouchableOpacity onPress={() => this.toggleButton()}>
-        <View style={[styles.button, this.state.active ? styles.buttonActive : null]}>
-          <Text style={this.state.active ? styles.textActive : styles.textInactive}>{this.props.answer.text}</Text>
+        <View style={[styles.button, this.props.active ? styles.buttonActive : null]}>
+          <Text style={this.props.active ? styles.textActive : styles.textInactive}>{this.props.answer.text}</Text>
         </View>
       </TouchableOpacity>
     );

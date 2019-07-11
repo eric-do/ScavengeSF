@@ -34,9 +34,9 @@ class AnswerList extends React.Component {
       .catch(e => console.error(`Couldn't get data`, e));
   }
 
-  setAnswer(answer) {
-    console.log('Setting answer state to ' + answer.id + ': ' + answer.text)
-    this.setState({ answer }, console.log(this.state.answer));
+  setAnswer(newAnswer) {
+    const answer = this.state.answer && this.state.answer.id === newAnswer.id ? null : newAnswer;    
+    this.setState({ answer });
   }
 
   handleQuestionAttempt() {
@@ -82,13 +82,14 @@ class AnswerList extends React.Component {
             achievement={this.state.achievement}/>
           <FlatList 
             data={answers}
+            extraData={this.state}
             keyExtractor={item => item.id.toString()}
             renderItem={({ item }) => (
               <OptionButton key={item.id}
                             answer={item} 
                             setAnswer={this.setAnswer} 
-                            activeAnswer={this.state.answer} />
-            )}
+                            active={this.state.answer && this.state.answer.id === item.id ? true : false} />
+             )}
           />
         </View>
         <SubmitBox correct={this.state.correct} handleQuestionAttempt={this.handleQuestionAttempt} />
