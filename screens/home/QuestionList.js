@@ -29,6 +29,7 @@ class QuestionList extends React.Component {
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => ( 
             <Text key={item.id}
+                  style={styles.text}
                   onPress={() => this.props.navigation.navigate('Answers', { question: item })}>{item.text}</Text>
           )}
         />
@@ -39,7 +40,12 @@ class QuestionList extends React.Component {
 
 const styles = StyleSheet.create({
   questions: {
-    paddingTop: 15
+    paddingTop: 15,
+    alignItems: 'center'
+  },
+  text: {
+    marginTop: 30,
+    alignSelf: 'center'
   }
 });
 
