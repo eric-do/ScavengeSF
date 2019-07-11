@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
-import AchievementModal from '../../components/AchievementModal'
+import AchievementModal from '../../components/AchievementModal';
+import SubmitBox from './SubmitBox.js';
 
 class AnswerList extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class AnswerList extends React.Component {
       question: {},
       modalVisible: false,
       achievement: null,
+      answer: null,
       correct: null
     }
     this.handleQuestionAttempt = this.handleQuestionAttempt.bind(this);
@@ -34,8 +36,8 @@ class AnswerList extends React.Component {
     this.setState({ modalVisible });
   }
 
-  handleQuestionAttempt(answer) {
-    const correct = answer.correct;
+  handleQuestionAttempt() {
+    const correct = this.state.answer ? this.state.answer.correct : false;
     const question = this.state.question;
 
     const options = {
@@ -47,10 +49,6 @@ class AnswerList extends React.Component {
     }
 
     if (correct) {
-      // Display confirmation the answer is correct
-      // Call server with user's progress
-      // Display achievement if one was earned
-      console.log('Correct answer. Posting to DB.')
       fetch(`${SERVER}questions/`, options)
         .then(response => response.text())
         .then(data => { 
@@ -65,21 +63,25 @@ class AnswerList extends React.Component {
 
   render() {
     const answers = this.state.answers;
+    const correct = this.state.correct;
 
     return (
-      <View style={styles.answers}>
-        <AchievementModal 
-          visible={this.state.modalVisible} 
-          handleModalVisibility={this.handleModalVisibility}
-          achievement={this.state.achievement}/>
-        <FlatList 
-          data={answers}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
-            <Text key={item.id}
-                  onPress={() => this.handleQuestionAttempt(item)}>{item.text}</Text>
-          )}
-        />
+      <View>
+        <View style={styles.answers}>
+          <AchievementModal 
+            visible={this.state.modalVisible} 
+            handleModalVisibility={this.handleModalVisibility}
+            achievement={this.state.achievement}/>
+          <FlatList 
+            data={answers}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => (
+              <Text key={item.id}
+                    onPress={() => this.setState({ answer: item})}>{item.text}</Text>
+            )}
+          />
+        </View>
+        <SubmitBox correct={this.state.correct} handleQuestionAttempt={this.handleQuestionAttempt} />
       </View>
     );
   }
@@ -87,7 +89,8 @@ class AnswerList extends React.Component {
 
 const styles = StyleSheet.create({
   answers: {
-    paddingTop: 15
+    paddingTop: 15,
+    height: '75%'
   }
 });
 
