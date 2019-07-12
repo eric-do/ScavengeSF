@@ -8,11 +8,18 @@ export default SubmitBox = ({correct, handleQuestionAttempt}) => (
     correct === false ?
     styles.incorrectBox :
     null ]}>
+    <View style={styles.messageContainer}>
+      <Text style={[styles.statusMessage, correct === true ? styles.correctMessage : styles.incorrectMessage]}>
+        {correct === null ? null : correct === true ? 'CORRECT!' : 'INCORRECT!'}
+      </Text>
+    </View>
+    <View style={styles.buttonContainer} >
     <TouchableOpacity onPress={handleQuestionAttempt}>
       <View style={[styles.button, correct === false ? styles.incorrectButton : styles.activeButton ]} >
         <Text style={{color: 'white'}}>{correct === null ? 'CHECK' : 'CONTINUE'}</Text>
       </View>
     </TouchableOpacity>
+    </View>
   </View>
 );
 
@@ -21,10 +28,6 @@ const styles = StyleSheet.create({
     height: '25%',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  emptyBox: {
-    flex: 1,
-    height: 0.2
   },
   correctBox: {
     backgroundColor: '#48C9B0'
@@ -50,5 +53,25 @@ const styles = StyleSheet.create({
   incorrectButton: {
     backgroundColor: '#EC7063',
     color: 'white'
+  }, 
+  statusMessage: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  messageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  correctMessage: {
+    color: '#0E6655'
+  },
+  incorrectMessage: {
+    color: '#922B21'
   }
 });

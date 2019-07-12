@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
+    marginTop: 20
   },
   description: {
     fontSize: 12,
