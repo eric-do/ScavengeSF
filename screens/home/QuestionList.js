@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
+import ListBox from '../../components/ListBox';
+import QuestionContainer from '../../components/QuestionContainer';
 
 class QuestionList extends React.Component {
   constructor(props) {
@@ -26,11 +28,15 @@ class QuestionList extends React.Component {
       <View style={styles.questions}>
         <FlatList
           data={questions}
+          style={styles.list}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => ( 
-            <Text key={item.id}
-                  style={styles.text}
-                  onPress={() => this.props.navigation.navigate('Answers', { question: item })}>{item.text}</Text>
+            <ListBox 
+              key={item.id}
+              pressHandler={() => this.props.navigation.navigate('Answers', { question: item })}
+            >
+                <QuestionContainer question={item}/>
+            </ListBox>                
           )}
         />
       </View>
@@ -40,12 +46,13 @@ class QuestionList extends React.Component {
 
 const styles = StyleSheet.create({
   questions: {
-    paddingTop: 15,
     alignItems: 'center'
   },
   text: {
-    marginTop: 30,
     alignSelf: 'center'
+  },
+  list: {
+    width: '100%'
   }
 });
 

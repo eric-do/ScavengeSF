@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
 import AchievementModal from '../../components/AchievementModal';
-import SubmitBox from './SubmitBox.js';
-import OptionButton from './OptionButton.js';
+import SubmitBox from '../../components/SubmitBox.js';
+import OptionButton from '../../components/OptionButton.js';
 
 class AnswerList extends React.Component {
   constructor(props) {
@@ -40,7 +40,6 @@ class AnswerList extends React.Component {
   }
 
   handleQuestionAttempt() {
-    console.log(this.state.answer);
     const correct = this.state.answer ? this.state.answer.correct : false;
     const question = this.state.question;
 
