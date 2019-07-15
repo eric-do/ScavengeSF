@@ -5,6 +5,12 @@ import ListBox from '../../components/ListBox';
 import QuestionContainer from '../../components/QuestionContainer';
 
 class QuestionList extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('landmark').name
+    }
+  }
+    
   constructor(props) {
     super(props);
     this.state = {

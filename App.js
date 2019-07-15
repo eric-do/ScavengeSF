@@ -10,6 +10,10 @@ import AnswerList from './screens/Home/AnswerList.js';
 import AchievementList from './screens/Achievements/AchievementList.js';
 
 class App extends React.Component {
+  static navigationOptions = {
+    title: 'Scavenge SF',
+  };
+
   constructor(props) {
     super(props);
     this.state = {

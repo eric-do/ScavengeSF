@@ -34,24 +34,25 @@ class AchievementModal extends React.Component {
         onBackdropPress={this.handleHideModal}
         >
           <View style={styles.modalContent}>
+              <View style={styles.textContainer}>
+                <Text style={styles.title}>
+                  {achievement ? achievement.name : null}
+                </Text>
+                <Text style={styles.description}>
+                  {achievement ? achievement.description : null}
+                </Text>
+              </View>
 
-              <Text style={styles.title}>
-                {achievement ? achievement.name : null}
-              </Text>
-
-              <Text style={styles.description}>
-                {achievement ? achievement.description : null}
-              </Text>
-
-              <TouchableHighlight onPress={this.handleHideModal}>
-                  <Button
-                    onPress={this.handleHideModal}
-                    title="Dismiss"
-                    color="blue"
-                    accessibilityLabel="Dismiss this notification"
-                  />
-              </TouchableHighlight>
-
+              <View style={styles.buttonContainer}>
+                <TouchableHighlight onPress={this.handleHideModal}>
+                    <View
+                      onPress={this.handleHideModal}
+                      style={styles.button}
+                    >
+                      <Text style={styles.buttonText}>DISMISS</Text>
+                    </View>
+                </TouchableHighlight>
+              </View>
           </View>
       </Modal>
     );
@@ -62,13 +63,41 @@ class AchievementModal extends React.Component {
 const styles = StyleSheet.create({
   modalContent: {
    backgroundColor: 'white',
-   alignItems: 'center'
+   alignItems: 'center',
+   justifyContent: 'center',
+   height: '35%',
+  },
+  textContainer: {
+    flex: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#3498DB',
+    marginBottom: 10
   },
   description: {
-    fontSize: 12,
+    fontSize: 14
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 20
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: '#3498DB',
+    height: 50,
+    width: 200,
+  },
+  buttonText: {
+    color: '#3498DB'
   }
 });
 

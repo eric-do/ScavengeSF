@@ -69,6 +69,7 @@ class AnswerList extends React.Component {
   }
 
   render() {
+    const question = this.props.navigation.getParam('question', null);
     const answers = this.state.answers;
     const correct = this.state.correct;
 
@@ -79,6 +80,9 @@ class AnswerList extends React.Component {
             visible={this.state.modalVisible} 
             handleModalVisibility={this.handleModalVisibility}
             achievement={this.state.achievement}/>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{question.text}</Text>
+          </View>
           <FlatList 
             data={answers}
             extraData={this.state}
@@ -98,6 +102,18 @@ class AnswerList extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  titleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 30,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 20
+  },
   answers: {
     paddingTop: 15,
     height: '75%'

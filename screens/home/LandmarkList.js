@@ -15,7 +15,7 @@ export default LandmarkList = ({ landmarks, navigation }) => {
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <View>  
-            <TouchableHighlight onPress={() => navigation.navigate('Questions', { id: item.id })} >
+            <TouchableHighlight onPress={() => navigation.navigate('Questions', { id: item.id, landmark: item })} >
               <ImageBackground style={styles.image}
                      source={{ uri: `${SERVER}${item.url}` }} >
                 <View style={styles.thumbnailOverlay}>
