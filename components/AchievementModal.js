@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import Modal from 'react-native-modal';
 
 /**
@@ -44,14 +44,14 @@ class AchievementModal extends React.Component {
               </View>
 
               <View style={styles.buttonContainer}>
-                <TouchableHighlight onPress={this.handleHideModal}>
+                <TouchableOpacity onPress={this.handleHideModal}>
                     <View
                       onPress={this.handleHideModal}
                       style={styles.button}
                     >
                       <Text style={styles.buttonText}>DISMISS</Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
           </View>
       </Modal>

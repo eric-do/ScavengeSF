@@ -7,8 +7,7 @@ import { StyleSheet,
          ImageBackground } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
 
-export default LandmarkList = ({ landmarks, navigation }) => {
-  return (
+export default LandmarkList = ({ landmarks, navigation }) => (
     <View style={styles.container}>
       <FlatList
         data={landmarks}
@@ -27,8 +26,7 @@ export default LandmarkList = ({ landmarks, navigation }) => {
         )}
       />
     </View>
-  );
-};
+);
 
 const styles = StyleSheet.create({
   container: {

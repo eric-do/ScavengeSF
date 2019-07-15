@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { SERVER } from 'react-native-dotenv';
 import AchievementModal from '../../components/AchievementModal';
 import SubmitBox from '../../components/SubmitBox.js';
 import OptionButton from '../../components/OptionButton.js';
+import { getAnswerList, updateQuestionsCompleted } from '../../api';
 
 class AnswerList extends React.Component {
   constructor(props) {
@@ -27,11 +27,7 @@ class AnswerList extends React.Component {
     const id = question.id;
 
     this.setState({ question });
-
-    fetch(`${SERVER}answers?id=${id}`)
-      .then(results => results.json())
-      .then(answers => this.setState({ answers }))
-      .catch(e => console.error(`Couldn't get data`, e));
+    getAnswerList(id, (stateObj) => this.setState(stateObj));
   }
 
   setAnswer(newAnswer) {
@@ -52,14 +48,7 @@ class AnswerList extends React.Component {
     }
 
     if (correct) {
-      fetch(`${SERVER}questions/`, options)
-        .then(response => response.text())
-        .then(data => { 
-          const achievement = data ? JSON.parse(data) : null;
-          const modalVisible = achievement ? true : false;
-          this.setState({ achievement, modalVisible });
-        })
-        .catch(e => console.error('request failed', e));
+      updateQuestionsCompleted(options, (stateObj) => this.setState(stateObj));
     }
     this.setState({ correct: correct });
   }

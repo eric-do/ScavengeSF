@@ -1,8 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { SERVER } from 'react-native-dotenv';
+import ListBox from '../../components/ListBox';
+import { getAchievementList } from '../../api';
 
 class AchievementList extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Achievements'
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -11,10 +16,7 @@ class AchievementList extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`${SERVER}achievements?id=${1}`)
-      .then(response => response.json())
-      .then(achievements => this.setState({ achievements }))
-      .catch(error => console.error('Error getting achievements', error));
+    getAchievementList(1, (stateObj) => this.setState(stateObj));
   }
 
   render() {
@@ -26,10 +28,12 @@ class AchievementList extends React.Component {
           data={achievements}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.achievements}>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.description}>{item.description}</Text>
-            </View>
+            <ListBox>
+              <View style={styles.achievements}>
+                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.description}>{item.description}</Text>
+              </View>
+            </ListBox>
           )}
         />
       </View>
@@ -42,11 +46,13 @@ const styles = StyleSheet.create({
    alignItems: 'center'
   },
   name: {
-    fontSize: 18,
-    marginTop: 20
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#3498DB',
+    marginBottom: 10
   },
   description: {
-    fontSize: 12,
+    fontSize: 14,
   }
 });
 

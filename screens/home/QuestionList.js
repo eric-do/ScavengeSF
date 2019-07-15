@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { SERVER } from 'react-native-dotenv';
 import ListBox from '../../components/ListBox';
 import QuestionContainer from '../../components/QuestionContainer';
+import { getQuestionList } from '../../api';
 
 class QuestionList extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -22,10 +22,7 @@ class QuestionList extends React.Component {
     const { navigation } = this.props;
     const id = navigation.getParam('id', 1);
 
-    fetch(`${SERVER}questions?id=${id}`)
-      .then(response => response.json())
-      .then(questions => this.setState({ questions }))
-      .catch(e => console.error('Could not get data', e));
+    getQuestionList(id, (stateObj) => this.setState(stateObj));
   }
 
   render() {
