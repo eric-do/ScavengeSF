@@ -25,8 +25,10 @@ class AchievementModal extends React.Component {
     const modalVisible = this.props.visible;
     return (
       <Modal 
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
+        animationIn="zoomInDown"
+        animationInTiming={500}
+        animationOut="zoomOutUp"
+        animationOutTiming={500}
         hasBackdrop={true}
         backdropColor="black"
         backdropOpacity={0.7}
