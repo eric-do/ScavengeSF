@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 import AchievementModal from '../../components/AchievementModal';
 import SubmitBox from '../../components/SubmitBox.js';
 import OptionButton from '../../components/OptionButton.js';
-import { getAnswerList, updateQuestionsCompleted, updateUserVote } from '../../api';
+import { getAnswerList, updateQuestionsCompleted, 
+         updateUserVote, getUserVote } from '../../api';
 
 class AnswerList extends React.Component {
   constructor(props) {
@@ -27,10 +28,13 @@ class AnswerList extends React.Component {
   componentDidMount() {
     const { navigation } = this.props;
     const question = navigation.getParam('question', null);
-    const id = question.id;
+    const questionId = question.id;
+    const userId = this.state.userId;
 
     this.setState({ question });
-    getAnswerList(id, (stateObj) => this.setState(stateObj));
+    getAnswerList(questionId, stateObj => this.setState(stateObj));
+    getUserVote(userId, questionId, stateObj => this.setState(stateObj));
+
   }
 
   handleModalVisibility(modalVisible) {

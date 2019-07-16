@@ -22,6 +22,12 @@ export const getAchievementList = (id, cb) => {
     .catch(error => console.error('Error getting achievements', error));
 }
 
+export const getUserVote = (userId, questionId, cb) => {
+  fetch(`${SERVER}get_vote?userId=${userId}&questionId=${questionId}`)
+    .then(response => response.json())
+    .then(data => cb({ direction: data.direction }));
+}
+
 /* POSTS */
 export const updateQuestionsCompleted = (options, cb) => {
   fetch(`${SERVER}questions/`, options)
