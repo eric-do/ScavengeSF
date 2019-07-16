@@ -46,6 +46,10 @@ export const updateUserVote = (vote, cb) => {
   };
 
   fetch(`${SERVER}vote/`, options)
-    .then(response => console.log('Update successful'))
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      cb(data);
+    })
     .catch(e => console.error('Error sending vote', e));
 }

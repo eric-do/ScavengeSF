@@ -72,7 +72,7 @@ class AnswerList extends React.Component {
     };
 
     this.setState({ direction });
-    updateUserVote(vote);
+    updateUserVote(vote, stateObj => this.setState(stateObj));
   }
 
   render() {
