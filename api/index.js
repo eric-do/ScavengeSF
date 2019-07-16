@@ -1,5 +1,6 @@
 import { SERVER } from 'react-native-dotenv';
 
+/* GETS */
 export const getAnswerList = (id, cb) => {
   fetch(`${SERVER}answers?id=${id}`)
     .then(results => results.json())
@@ -21,6 +22,7 @@ export const getAchievementList = (id, cb) => {
     .catch(error => console.error('Error getting achievements', error));
 }
 
+/* POSTS */
 export const updateQuestionsCompleted = (options, cb) => {
   fetch(`${SERVER}questions/`, options)
     .then(response => response.text())
@@ -30,4 +32,20 @@ export const updateQuestionsCompleted = (options, cb) => {
       cb({ achievement, modalVisible });
     })
     .catch(e => console.error('request failed', e));
+}
+
+export const updateUserVote = (vote, cb) => {
+  const { userId, questionId, direction } = vote;
+  console.log(userId, questionId, direction);
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: `userId=${userId}&questionId=${questionId}&direction=${direction}`
+  };
+
+  fetch(`${SERVER}vote/`, options)
+    .then(response => console.log('Update successful'))
+    .catch(e => console.error('Error sending vote', e));
 }

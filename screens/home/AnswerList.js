@@ -3,22 +3,25 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 import AchievementModal from '../../components/AchievementModal';
 import SubmitBox from '../../components/SubmitBox.js';
 import OptionButton from '../../components/OptionButton.js';
-import { getAnswerList, updateQuestionsCompleted } from '../../api';
+import { getAnswerList, updateQuestionsCompleted, updateUserVote } from '../../api';
 
 class AnswerList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: 1,
       answers: [],
       question: {},
       modalVisible: false,
       achievement: null,
       answer: null,
-      correct: null
+      correct: null,
+      direction: 0
     }
     this.handleQuestionAttempt = this.handleQuestionAttempt.bind(this);
     this.handleModalVisibility = this.handleModalVisibility.bind(this);
     this.setAnswer = this.setAnswer.bind(this);
+    this.handleVote = this.handleVote.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +33,10 @@ class AnswerList extends React.Component {
     getAnswerList(id, (stateObj) => this.setState(stateObj));
   }
 
+  handleModalVisibility(modalVisible) {
+    this.setState({ modalVisible });
+  }
+
   setAnswer(newAnswer) {
     const answer = this.state.answer && this.state.answer.id === newAnswer.id ? null : newAnswer;    
     this.setState({ answer });
@@ -38,13 +45,14 @@ class AnswerList extends React.Component {
   handleQuestionAttempt() {
     const correct = this.state.answer ? this.state.answer.correct : false;
     const question = this.state.question;
+    const userId = this.state.userId;
 
     const options = {
       method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
-      body: `userId=${1}&questionId=${question.id}`
+      body: `userId=${userId}&questionId=${question.id}`
     }
 
     if (correct) {
@@ -53,8 +61,18 @@ class AnswerList extends React.Component {
     this.setState({ correct: correct });
   }
 
-  handleModalVisibility(modalVisible) {
-    this.setState({ modalVisible });
+  handleVote(string) {
+    const userId = this.state.userId;
+    const questionId = this.state.question.id;
+    const direction = string.toLowerCase() === 'upvote' ? 1 : -1;
+    const vote = {
+      direction,
+      userId,
+      questionId
+    };
+
+    this.setState({ direction });
+    updateUserVote(vote);
   }
 
   render() {
@@ -84,7 +102,12 @@ class AnswerList extends React.Component {
              )}
           />
         </View>
-        <SubmitBox correct={this.state.correct} handleQuestionAttempt={this.handleQuestionAttempt} />
+        <SubmitBox 
+          correct={this.state.correct} 
+          handleQuestionAttempt={this.handleQuestionAttempt}
+          handleVote={this.handleVote} 
+          direction={this.state.direction}
+          />
       </View>
     );
   }

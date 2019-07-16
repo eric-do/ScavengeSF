@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import VotesContainer from './VotesContainer';
 
-export default SubmitBox = ({correct, handleQuestionAttempt}) => (
+export default SubmitBox = ({correct, handleQuestionAttempt, handleVote, direction}) => (
   <View style={[ styles.statusContainer, 
     correct === true ?  
     styles.correctBox : 
@@ -14,12 +15,22 @@ export default SubmitBox = ({correct, handleQuestionAttempt}) => (
       </Text>
     </View>
     <View style={styles.buttonContainer} >
-    <TouchableOpacity onPress={handleQuestionAttempt}>
-      <View style={[styles.button, correct === false ? styles.incorrectButton : styles.activeButton ]} >
-        <Text style={{color: 'white'}}>{correct === null ? 'CHECK' : 'CONTINUE'}</Text>
-      </View>
-    </TouchableOpacity>
+      <TouchableOpacity onPress={handleQuestionAttempt}>
+        <View style={[styles.button, correct === false ? styles.incorrectButton : styles.activeButton ]} >
+          <Text style={{color: 'white'}}>{correct === null ? 'CHECK' : 'CONTINUE'}</Text>
+        </View>
+      </TouchableOpacity>
     </View>
+    {
+      correct !== null 
+      ? 
+      <VotesContainer 
+        handleVote={handleVote}
+        direction={direction}/> 
+      : 
+      null
+    }
+   
   </View>
 );
 
