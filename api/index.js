@@ -36,7 +36,6 @@ export const updateQuestionsCompleted = (options, cb) => {
 
 export const updateUserVote = (vote, cb) => {
   const { userId, questionId, direction } = vote;
-  console.log(userId, questionId, direction);
   const options = {
     method: 'POST',
     headers: {
@@ -48,7 +47,6 @@ export const updateUserVote = (vote, cb) => {
   fetch(`${SERVER}vote/`, options)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       cb(data);
     })
     .catch(e => console.error('Error sending vote', e));

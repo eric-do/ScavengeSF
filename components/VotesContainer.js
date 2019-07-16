@@ -5,12 +5,12 @@ export default VotesContainer = ({ handleVote, direction }) => (
   <View style={styles.votesContainer}>
     <TouchableOpacity style={styles.voteBox} onPress={() => handleVote('upvote')}>
       <View>
-        <Text style={styles.voteText}>UPVOTE</Text>
+        <Text style={[styles.voteText, direction === 1 ? styles.activeUpvote : null]}>UPVOTE</Text>
       </View>
     </TouchableOpacity>
     <TouchableOpacity style={styles.voteBox} onPress={() => handleVote('downvote')}>
       <View>
-        <Text style={styles.voteText}>DOWNVOTE</Text>
+        <Text style={[styles.voteText, direction === -1 ? styles.activeDownvote : null]}>DOWNVOTE</Text>
       </View>
     </TouchableOpacity>
   </View>
@@ -27,10 +27,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingRight: 5,
-    paddingLeft: 5
+    paddingLeft: 5,
+    width: 85
   },
   voteText: {
     fontSize: 12,
     color: 'white'
+  },
+  activeUpvote: {
+    color: '#3498DB',
+    fontWeight: 'bold'
+  },
+  activeDownvote: {
+    color: 'orange',
+    fontWeight: 'bold'
   }
 });
