@@ -1,31 +1,51 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { getUpvotes, getDownvotes } from '../api';
 
-const QuestionContainer = ({ question }) => (
-  <View>
+export default class QuestionContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      upvotes: 0,
+      downvotes: 0
+    };
+  }
 
-    <View style={styles.textContainer}>
-      <Text style={styles.questionText}>{question.text}</Text>
-    </View>
+  componentDidMount() {
+    getUpvotes(this.props.question.id, upvotes => this.setState(upvotes));
+    getDownvotes(this.props.question.id, downvotes => this.setState(downvotes));
+  }
 
-    <View style={styles.buttonContainer}>
+  render() {
+    const { question } = this.props;
+    const { upvotes, downvotes } = this.state;
+    return (
+      <View>
 
-      <View style={styles.button}>
-         <Text style={styles.buttonText}>Fun: {question.rating}/5</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.questionText}>{question.text}</Text>
+        </View>
+
+        <View style={styles.buttonContainer}>
+
+          <View style={styles.button}>
+             <Text style={styles.buttonText}>Fun: {question.rating}/5</Text>
+          </View>
+
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Upvotes: {upvotes ? upvotes : 0}</Text>
+          </View>
+
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Downvotes: {downvotes ? downvotes : 0}</Text>
+          </View>
+
+        </View>
+
       </View>
-
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Upvotes: 10</Text>
-      </View>
-
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Downvotes: 5</Text>
-      </View>
-
-    </View>
-
-  </View>
-);
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   textContainer: {
@@ -51,5 +71,3 @@ const styles = StyleSheet.create({
     color: '#3498DB'
   }
 })
-
-export default QuestionContainer;

@@ -28,6 +28,20 @@ export const getUserVote = (userId, questionId, cb) => {
     .then(data => cb({ direction: data.direction }));
 }
 
+export const getUpvotes = (questionId, cb) => {
+  fetch(`${SERVER}upvotes?questionId=${questionId}`)
+    .then(response => response.json())
+    .then(upvotes => cb(upvotes))
+    .catch(e => console.error('Could not get upvotes', e));
+}
+
+export const getDownvotes = (questionId, cb) => {
+  fetch(`${SERVER}downvotes?questionId=${questionId}`)
+  .then(response => response.json())
+  .then(downvotes => cb(downvotes))
+  .catch(e => console.error('Could not get downvotes', e));
+}
+
 /* POSTS */
 export const updateQuestionsCompleted = (options, cb) => {
   fetch(`${SERVER}questions/`, options)
