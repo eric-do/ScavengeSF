@@ -25,7 +25,8 @@ export const getAchievementList = (id, cb) => {
 export const getUserVote = (userId, questionId, cb) => {
   fetch(`${SERVER}get_vote?userId=${userId}&questionId=${questionId}`)
     .then(response => response.json())
-    .then(data => cb({ direction: data.direction }));
+    .then(data => data ? cb({ direction: data.direction }) : cb({ direction: 0 }))
+    .catch(e => console.error('Could not get user votes', e));
 }
 
 export const getUpvotes = (questionId, cb) => {
