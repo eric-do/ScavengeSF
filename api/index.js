@@ -1,53 +1,84 @@
 import { SERVER } from 'react-native-dotenv';
 
 /* GETS */
-export const getLandmarks = (id, cb) => {
-  fetch(`${SERVER}landmarks?id=${id}`)
-      .then(data => data.json())
-      .then(landmarks => cb({ landmarks }))
-      .catch(e => console.error('Couldn\'t get data', e));
+export const getLocations = async cb => {
+  try {
+    const data = await fetch(`${SERVER}locations`);
+    const locations = await data.json();
+    cb({ locations });
+  } catch (e) {
+    console.error(`Coudln't get locations`, e);
+  }
 }
 
-export const getAnswerList = (id, cb) => {
-  fetch(`${SERVER}answers?id=${id}`)
-    .then(results => results.json())
-    .then(answers => cb({ answers }))
-    .catch(e => console.error(`Couldn't get data`, e));
+export const getLandmarks = async (id, cb) => {
+  try {
+    const data = await fetch(`${SERVER}landmarks?id=${id}`);
+    const landmarks = await data.json();
+    cb({ landmarks });
+  } catch (e) {
+    console.error(`Couldn't get landmarks`, e);
+  }
 }
 
-export const getQuestionList = (id, cb) => {
-  fetch(`${SERVER}questions?id=${id}`)
-    .then(response => response.json())
-    .then(questions => cb({ questions }))
-    .catch(e => console.error('Could not get data', e));
+export const getAnswerList = async (id, cb) => {
+  try {
+    const data = await fetch(`${SERVER}answers?id=${id}`);
+    const answers = await data.json();
+    cb({ answers });
+  } catch (e) {
+    console.error(`Couldn't get data`, e);
+  }
 }
 
-export const getAchievementList = (id, cb) => {
-  fetch(`${SERVER}achievements?id=${id}`)
-    .then(response => response.json())
-    .then(achievements => cb({ achievements }))
-    .catch(error => console.error('Error getting achievements', error));
+export const getQuestionList = async (id, cb) => {
+  try {
+    const data = await fetch(`${SERVER}questions?id=${id}`);
+    const questions = await data.json();
+    cb({ questions });
+  } catch (e) {
+    console.error(`Couldn't get questions`, e);
+  }
 }
 
-export const getUserVote = (userId, questionId, cb) => {
-  fetch(`${SERVER}get_vote?userId=${userId}&questionId=${questionId}`)
-    .then(response => response.json())
-    .then(data => data ? cb({ direction: data.direction }) : cb({ direction: 0 }))
-    .catch(e => console.error('Could not get user votes', e));
+export const getAchievementList = async (id, cb) => {
+  try {
+    const data = await fetch(`${SERVER}achievements?id=${id}`);
+    const achievements = await data.json();
+    cb({ achievements });
+  } catch (e) {
+    console.error(`Error getting achievements`, e);
+  }
 }
 
-export const getUpvotes = (questionId, cb) => {
-  fetch(`${SERVER}upvotes?questionId=${questionId}`)
-    .then(response => response.json())
-    .then(upvotes => cb(upvotes))
-    .catch(e => console.error('Could not get upvotes', e));
+export const getUserVote = async (userId, questionId, cb) => {
+  try {
+    const response = await fetch(`${SERVER}get_vote?userId=${userId}&questionId=${questionId}`);
+    const data = await response.json();
+    return data ? cb({ direction: data.direction }) : cb({ direction: 0 });
+  } catch (e) {
+    console.error('Could not get user votes', e);
+  }
 }
 
-export const getDownvotes = (questionId, cb) => {
-  fetch(`${SERVER}downvotes?questionId=${questionId}`)
-  .then(response => response.json())
-  .then(downvotes => cb(downvotes))
-  .catch(e => console.error('Could not get downvotes', e));
+export const getUpvotes = async (questionId, cb) => {
+  try {
+    const data = await fetch(`${SERVER}upvotes?questionId=${questionId}`);
+    const upvotes = await data.json();
+    cb(upvotes);
+  } catch (e) {
+    console.error('Could not get upvotes', e);
+  }
+}
+
+export const getDownvotes = async (questionId, cb) => {
+  try {
+    const data = await fetch(`${SERVER}downvotes?questionId=${questionId}`);
+    downvotes = await data.json();
+    cb(downvotes);
+  } catch (e) {
+    console.error('Could not get downvotes', e)
+  }
 }
 
 /* POSTS */

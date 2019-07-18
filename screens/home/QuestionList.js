@@ -21,7 +21,6 @@ class QuestionList extends React.Component {
   componentDidMount() {
     const { navigation } = this.props;
     const id = navigation.getParam('id', 1);
-
     getQuestionList(id, (stateObj) => this.setState(stateObj));
   }
 

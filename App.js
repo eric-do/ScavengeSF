@@ -9,6 +9,7 @@ import LandmarkList from './screens/Home/LandmarkList.js';
 import QuestionList from './screens/Home/QuestionList.js';
 import AnswerList from './screens/Home/AnswerList.js';
 import AchievementList from './screens/Achievements/AchievementList.js';
+import { getLocations } from './api';
 
 class App extends React.Component {
   static navigationOptions = {
@@ -24,14 +25,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-      // fetch(`${SERVER}landmarks?id=${this.state.id}`)
-      //   .then(data => data.json())
-      //   .then(landmarks => { this.setState({ landmarks })})
-      //   .catch(e => console.error('Couldn\'t get data', e));
-      fetch(`${SERVER}locations`)
-      .then(data => data.json())
-      .then(locations => this.setState({ locations }))
-      .catch(e => console.error('Couldn\'t get data', e));
+    getLocations(stateObj => this.setState(stateObj));
   }
 
   render() {

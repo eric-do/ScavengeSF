@@ -34,7 +34,6 @@ class AnswerList extends React.Component {
     this.setState({ question });
     getAnswerList(questionId, stateObj => this.setState(stateObj));
     getUserVote(userId, questionId, stateObj => this.setState(stateObj));
-
   }
 
   handleModalVisibility(modalVisible) {

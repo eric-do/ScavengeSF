@@ -19,7 +19,6 @@ export default class LandmarkList extends React.Component {
   componentDidMount() {
     const { navigation } = this.props;
     const id = navigation.getParam('id', 1);
-
     getLandmarks(id, stateObj => this.setState(stateObj));
   }
 

@@ -7,9 +7,8 @@ import { StyleSheet,
   ImageBackground } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
 
-export default LocationList = ({ locations, navigation }) => {
-  console.log(navigation);
-  return (<View style={styles.container}>
+export default LocationList = ({ locations, navigation }) => (
+  <View style={styles.container}>
     <FlatList
       data={locations}
       keyExtractor={item => item.id.toString()}
@@ -26,8 +25,9 @@ export default LocationList = ({ locations, navigation }) => {
         </View>
       )}
     />
-  </View>);
-};
+  </View>
+);
+
 
 const styles = StyleSheet.create({
   container: {
