@@ -11,6 +11,9 @@ export default class QuestionContainer extends React.Component {
     };
   }
 
+  /**
+   * ? Need to consider joining the two API calls into one
+   */
   componentDidMount() {
     getUpvotes(this.props.question.id, upvotes => this.setState(upvotes));
     getDownvotes(this.props.question.id, downvotes => this.setState(downvotes));

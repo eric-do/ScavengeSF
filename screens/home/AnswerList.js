@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import AchievementModal from '../../components/AchievementModal';
 import SubmitBox from '../../components/SubmitBox.js';
 import OptionButton from '../../components/OptionButton.js';
@@ -46,6 +46,9 @@ class AnswerList extends React.Component {
     this.setState({ answer });
   }
 
+  /**
+   * TODO: Fix this function so the "CONTINUE" button redirects away from the question
+   */
   handleQuestionAttempt() {
     const correct = this.state.answer ? this.state.answer.correct : false;
     const question = this.state.question;

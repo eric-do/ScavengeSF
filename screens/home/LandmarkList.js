@@ -6,27 +6,48 @@ import { StyleSheet,
          TouchableHighlight,
          ImageBackground } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
+import { getLandmarks } from '../../api';
 
-export default LandmarkList = ({ landmarks, navigation }) => (
-    <View style={styles.container}>
-      <FlatList
-        data={landmarks}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => (
-          <View>  
-            <TouchableHighlight onPress={() => navigation.navigate('Questions', { id: item.id, landmark: item })} >
-              <ImageBackground style={styles.image}
-                     source={{ uri: `${SERVER}${item.url}` }} >
-                <View style={styles.thumbnailOverlay}>
-                  <Text style={styles.thumbnailText}>{item.name}</Text>
-                </View>
-              </ImageBackground>
-            </TouchableHighlight>                       
-          </View>
-        )}
-      />
-    </View>
-);
+export default class LandmarkList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      landmarks: []
+    }
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props;
+    const id = navigation.getParam('id', 1);
+
+    getLandmarks(id, stateObj => this.setState(stateObj));
+  }
+
+  render() {
+    const { navigation } = this.props;
+
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={this.state.landmarks}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => (
+            <View>  
+              <TouchableHighlight onPress={() => navigation.navigate('Questions', { id: item.id, landmark: item })} >
+                <ImageBackground style={styles.image}
+                       source={{ uri: `${SERVER}${item.url}` }} >
+                  <View style={styles.thumbnailOverlay}>
+                    <Text style={styles.thumbnailText}>{item.name}</Text>
+                  </View>
+                </ImageBackground>
+              </TouchableHighlight>                       
+            </View>
+          )}
+        />
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,13 @@
 import { SERVER } from 'react-native-dotenv';
 
 /* GETS */
+export const getLandmarks = (id, cb) => {
+  fetch(`${SERVER}landmarks?id=${id}`)
+      .then(data => data.json())
+      .then(landmarks => cb({ landmarks }))
+      .catch(e => console.error('Couldn\'t get data', e));
+}
+
 export const getAnswerList = (id, cb) => {
   fetch(`${SERVER}answers?id=${id}`)
     .then(results => results.json())

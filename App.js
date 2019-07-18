@@ -4,6 +4,7 @@ import { createStackNavigator,
          createAppContainer, 
          createBottomTabNavigator } from 'react-navigation';
 import { SERVER } from 'react-native-dotenv';
+import LocationList from './screens/Home/LocationList.js';
 import LandmarkList from './screens/Home/LandmarkList.js';
 import QuestionList from './screens/Home/QuestionList.js';
 import AnswerList from './screens/Home/AnswerList.js';
@@ -18,21 +19,25 @@ class App extends React.Component {
     super(props);
     this.state = {
       id: 1,
-      landmarks: []
+      locations: []
     }
   }
 
   componentDidMount() {
-      fetch(`${SERVER}landmarks?id=${this.state.id}`)
-        .then(data => data.json())
-        .then(landmarks => { this.setState({ landmarks })})
-        .catch(e => console.error('Couldn\'t get data', e));
+      // fetch(`${SERVER}landmarks?id=${this.state.id}`)
+      //   .then(data => data.json())
+      //   .then(landmarks => { this.setState({ landmarks })})
+      //   .catch(e => console.error('Couldn\'t get data', e));
+      fetch(`${SERVER}locations`)
+      .then(data => data.json())
+      .then(locations => this.setState({ locations }))
+      .catch(e => console.error('Couldn\'t get data', e));
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <LandmarkList landmarks={this.state.landmarks} navigation={this.props.navigation}/>
+        <LocationList locations={this.state.locations} navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -58,6 +63,7 @@ const styles = StyleSheet.create({
 
 const HomeStack = createStackNavigator({
   Home: App,
+  Landmarks: LandmarkList,
   Questions: QuestionList,
   Answers: AnswerList
 },
