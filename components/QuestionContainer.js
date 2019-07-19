@@ -30,17 +30,12 @@ export default class QuestionContainer extends React.Component {
         </View>
 
         <View style={styles.buttonContainer}>
-
           <View style={styles.button}>
-             <Text style={styles.buttonText}>Fun: {question.rating}/5</Text>
+            <Text style={styles.upvoteText}>Upvotes: {upvotes ? upvotes : 0}</Text>
           </View>
 
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Upvotes: {upvotes ? upvotes : 0}</Text>
-          </View>
-
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Downvotes: {downvotes ? downvotes : 0}</Text>
+            <Text style={styles.downvoteText}>Downvotes: {downvotes ? downvotes : 0}</Text>
           </View>
 
         </View>
@@ -58,7 +53,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   button: {
     alignItems: 'center',
@@ -72,5 +69,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#3498DB'
+  },
+  upvoteText: {
+    color: 'green'
+  },
+  downvoteText: {
+    color: 'orange'
   }
 })
