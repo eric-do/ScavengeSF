@@ -9,6 +9,13 @@ import { SERVER } from 'react-native-dotenv';
 import { getLandmarks } from '../../api';
 
 export default class LandmarkList extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('location').name
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {

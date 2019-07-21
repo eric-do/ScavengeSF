@@ -6,32 +6,69 @@ import { StyleSheet,
   TouchableHighlight,
   ImageBackground } from 'react-native';
 import { SERVER } from 'react-native-dotenv';
+import { getLocations } from '../../api';
 
-export default LocationList = ({ locations, navigation }) => (
-  <View style={styles.container}>
-    <FlatList
-      data={locations}
-      keyExtractor={item => item.id.toString()}
-      renderItem={({ item }) => (
-        <View>  
-          <TouchableHighlight onPress={() => navigation.navigate('Landmarks', { id: item.id, location: item })} >
-            <ImageBackground style={styles.image}
-                   source={{ uri: `${SERVER}${item.url}` }} >
-              <View style={styles.thumbnailOverlay}>
-                <Text style={styles.thumbnailText}>{item.name}</Text>
-              </View>
-            </ImageBackground>
-          </TouchableHighlight>                       
-        </View>
-      )}
-    />
-  </View>
-);
+export default class LocationList extends React.Component {
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Scavenge"
+    }
+  }
+
+  _isMounted = false; 
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      locations: []
+    }
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    if (this._isMounted) {
+      getLocations(stateObj => this.setState(stateObj));
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  render() {
+    const { locations } = this.state;
+    const { navigation } = this.props;
+
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={locations}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => (
+            <View>  
+              <TouchableHighlight onPress={() => navigation.navigate('Landmarks', { id: item.id, location: item })} >
+                <ImageBackground style={styles.image}
+                       source={{ uri: `${SERVER}${item.url}` }} >
+                  <View style={styles.thumbnailOverlay}>
+                    <Text style={styles.thumbnailText}>{item.name}</Text>
+                  </View>
+                </ImageBackground>
+              </TouchableHighlight>                       
+            </View>
+          )}
+        />
+      </View>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   item: {
     padding: 10,
