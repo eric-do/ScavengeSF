@@ -10,7 +10,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       id: 1,
-      signedIn: true
+      signedIn: false
     };
   }
 

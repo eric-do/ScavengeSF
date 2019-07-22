@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, 
+import { 
+  StyleSheet, 
   Text, 
   View, 
   FlatList, 
   TouchableHighlight,
-  ImageBackground } from 'react-native';
+  ImageBackground 
+} from 'react-native';
 import { SERVER } from 'react-native-dotenv';
 import { getLocations } from '../../api';
 
