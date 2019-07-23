@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRootNavigator } from './router';
+import firebase from './firebase';
 
 export default class App extends React.Component {
   static navigationOptions = {
@@ -12,6 +13,9 @@ export default class App extends React.Component {
       id: 1,
       signedIn: false
     };
+  }
+
+  componentDidMount() {
   }
 
   render() {
