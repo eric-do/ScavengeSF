@@ -27,13 +27,15 @@ export const SignedOut = createStackNavigator({
   SignIn: {
     screen: SignIn,
     navigationOptions: {
-      title: "Sign In"
+      title: "Sign In",
+      header: null
     }
   },
   SignUp: {
     screen: SignUp,
     navigationOptions: {
-      title: "Sign Up"
+      title: "Sign Up",
+      header: null
     }
   }
 });

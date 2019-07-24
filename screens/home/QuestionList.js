@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import ListBox from '../../components/ListBox';
 import QuestionContainer from '../../components/QuestionContainer';
 import { getQuestionList } from '../../api';
+import { LinearGradient } from 'expo';
 
 class QuestionList extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -27,7 +28,7 @@ class QuestionList extends React.Component {
   render() {
     const questions = this.state.questions;
     return (
-      <View style={styles.questions}>
+      <LinearGradient colors={['#0081CF', '#0089BA', '#008E9B', '#008F7A']} style={styles.questions}>
         <FlatList
           data={questions}
           style={styles.list}
@@ -41,14 +42,15 @@ class QuestionList extends React.Component {
             </ListBox>                
           )}
         />
-      </View>
+      </LinearGradient>
     );
   }
 }
 
 const styles = StyleSheet.create({
   questions: {
-    alignItems: 'center'
+    alignItems: 'center', 
+    flex: 1
   },
   text: {
     alignSelf: 'center'

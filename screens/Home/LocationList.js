@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   ImageBackground 
 } from 'react-native';
-import { SERVER } from 'react-native-dotenv';
+import { SERVER } from '../../api';
 import { getLocations } from '../../api';
 
 export default class LocationList extends React.Component {

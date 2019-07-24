@@ -13,8 +13,9 @@ export const textinput = {
   borderWidth: 0.5,
   borderRadius: 5,
   borderColor: '#95A5A6',
+  backgroundColor: 'white',
   height: 50,
-  width: '60%',
+  width: '100%',
   paddingLeft: 10,
   marginTop: 5,
   marginBottom: 5

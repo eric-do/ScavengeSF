@@ -1,19 +1,25 @@
-import { SERVER } from 'react-native-dotenv';
+//import { SERVER } from 'react-native-dotenv';
+import constants from "expo-constants";
+const { manifest } = constants;
+
+export const SERVER = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
+  ? 'http://' + manifest.debuggerHost.split(`:`).shift().concat(`:3000`)
+  : `api.example.com`;
 
 /* GETS */
 export const getLocations = async cb => {
   try {
-    const data = await fetch(`${SERVER}locations`);
+    const data = await fetch(`${SERVER}/locations`);
     const locations = await data.json();
     cb({ locations });
   } catch (e) {
-    console.error(`Coudln't get locations`, e);
+    console.error(`Couldn't get locations`, e);
   }
 }
 
 export const getLandmarks = async (id, cb) => {
   try {
-    const data = await fetch(`${SERVER}landmarks?id=${id}`);
+    const data = await fetch(`${SERVER}/landmarks?id=${id}`);
     const landmarks = await data.json();
     cb({ landmarks });
   } catch (e) {
@@ -23,7 +29,7 @@ export const getLandmarks = async (id, cb) => {
 
 export const getAnswerList = async (id, cb) => {
   try {
-    const data = await fetch(`${SERVER}answers?id=${id}`);
+    const data = await fetch(`${SERVER}/answers?id=${id}`);
     const answers = await data.json();
     cb({ answers });
   } catch (e) {
@@ -33,7 +39,7 @@ export const getAnswerList = async (id, cb) => {
 
 export const getQuestionList = async (id, cb) => {
   try {
-    const data = await fetch(`${SERVER}questions?id=${id}`);
+    const data = await fetch(`${SERVER}/questions?id=${id}`);
     const questions = await data.json();
     cb({ questions });
   } catch (e) {
@@ -43,7 +49,7 @@ export const getQuestionList = async (id, cb) => {
 
 export const getAchievementList = async (id, cb) => {
   try {
-    const data = await fetch(`${SERVER}achievements?id=${id}`);
+    const data = await fetch(`${SERVER}/achievements?id=${id}`);
     const achievements = await data.json();
     cb({ achievements });
   } catch (e) {
@@ -53,7 +59,7 @@ export const getAchievementList = async (id, cb) => {
 
 export const getUserVote = async (userId, questionId, cb) => {
   try {
-    const response = await fetch(`${SERVER}get_vote?userId=${userId}&questionId=${questionId}`);
+    const response = await fetch(`${SERVER}/get_vote?userId=${userId}&questionId=${questionId}`);
     const data = await response.json();
     return data ? cb({ direction: data.direction }) : cb({ direction: 0 });
   } catch (e) {
@@ -63,7 +69,7 @@ export const getUserVote = async (userId, questionId, cb) => {
 
 export const getUpvotes = async (questionId, cb) => {
   try {
-    const data = await fetch(`${SERVER}upvotes?questionId=${questionId}`);
+    const data = await fetch(`${SERVER}/upvotes?questionId=${questionId}`);
     const upvotes = await data.json();
     cb(upvotes);
   } catch (e) {
@@ -73,7 +79,7 @@ export const getUpvotes = async (questionId, cb) => {
 
 export const getDownvotes = async (questionId, cb) => {
   try {
-    const data = await fetch(`${SERVER}downvotes?questionId=${questionId}`);
+    const data = await fetch(`${SERVER}/downvotes?questionId=${questionId}`);
     downvotes = await data.json();
     cb(downvotes);
   } catch (e) {
@@ -83,7 +89,7 @@ export const getDownvotes = async (questionId, cb) => {
 
 /* POSTS */
 export const updateQuestionsCompleted = (options, cb) => {
-  fetch(`${SERVER}questions/`, options)
+  fetch(`${SERVER}/questions/`, options)
     .then(response => response.text())
     .then(data => { 
       const achievement = data ? JSON.parse(data) : null;
@@ -103,7 +109,7 @@ export const updateUserVote = (vote, cb) => {
     body: `userId=${userId}&questionId=${questionId}&direction=${direction}`
   };
 
-  fetch(`${SERVER}vote/`, options)
+  fetch(`${SERVER}/vote/`, options)
     .then(response => response.json())
     .then(data => {
       cb(data);

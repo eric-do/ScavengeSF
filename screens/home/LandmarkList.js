@@ -5,8 +5,10 @@ import { StyleSheet,
          FlatList, 
          TouchableHighlight,
          ImageBackground } from 'react-native';
-import { SERVER } from 'react-native-dotenv';
+import { SERVER } from '../../api';
 import { getLandmarks } from '../../api';
+
+console.log(SERVER);
 
 export default class LandmarkList extends React.Component {
 

@@ -11,6 +11,7 @@ import { button, textinput } from "../../styles/global";
 import { onSignUp } from "../../auth";
 import firebase from "../../firebase";
 
+//https://stackoverflow.com/questions/55855752/firebase-signinwithemailandpassword-not-firing-then-until-after-ui-focus-chan
 //export default ({ navigation }) => (
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -47,6 +48,9 @@ export default class SignUp extends React.Component {
     console.log(this.unsubscribe);
   }
 
+  componentWillUnmount() {
+  }
+
   handleUsername(username) {
     this.setState({ username });
   }
@@ -77,8 +81,9 @@ export default class SignUp extends React.Component {
   }
 
   handleError(error) {
-    console.error(error);
-    this.setState({ error });
+    const { code, message } = error;
+    console.log(message);
+    this.setState({ error: message, loading: false });
   }
 
   render() {
@@ -88,6 +93,7 @@ export default class SignUp extends React.Component {
       </View>
     ) : (
       <View style={styles.container}>
+        <View style={styles.inputContainer}>
         <TextInput
           style={textinput}
           placeholder={"Email"}
@@ -112,7 +118,8 @@ export default class SignUp extends React.Component {
             <Text style={styles.buttonText}>Sign up</Text>
           </View>
         </TouchableOpacity>
-        <Text style={styles.signUpBtn}>{this.state.loading}</Text>
+        <Text style={styles.error}>{this.state.error}</Text>
+        </View>
       </View>
     );
   }
@@ -124,6 +131,11 @@ const styles = StyleSheet.create({
     height: "90%",
     alignItems: "center",
     justifyContent: "center"
+  },
+  inputContainer: {
+    width: '75%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   input: {},
   button: {
@@ -137,5 +149,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: "center",
     marginTop: 20
+  },
+  error: {
+    color: 'red'
   }
 });
