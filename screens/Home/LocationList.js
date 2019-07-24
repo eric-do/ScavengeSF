@@ -47,6 +47,7 @@ export default class LocationList extends React.Component {
         <FlatList
           data={locations}
           keyExtractor={item => item.id.toString()}
+          style={styles.list}
           renderItem={({ item }) => (
             <View>  
               <TouchableHighlight onPress={() => navigation.navigate('Landmarks', { id: item.id, location: item })} >
@@ -72,13 +73,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  list:{
+    width: '90%'
+  },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44
   },
   image: {
-    width: 400,
+    width: '100%',
     height: 200
   },
   thumbnailOverlay: {
