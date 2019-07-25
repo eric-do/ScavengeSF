@@ -28,7 +28,7 @@ class QuestionList extends React.Component {
   render() {
     const questions = this.state.questions;
     return (
-      <LinearGradient colors={['#0081CF', '#0089BA', '#008E9B', '#008F7A']} style={styles.questions}>
+      <View style={styles.questions}>
         <FlatList
           data={questions}
           style={styles.list}
@@ -42,7 +42,7 @@ class QuestionList extends React.Component {
             </ListBox>                
           )}
         />
-      </LinearGradient>
+      </View>
     );
   }
 }
@@ -50,7 +50,8 @@ class QuestionList extends React.Component {
 const styles = StyleSheet.create({
   questions: {
     alignItems: 'center', 
-    flex: 1
+    flex: 1,
+    backgroundColor: '#EAF2F8'
   },
   text: {
     alignSelf: 'center'

@@ -12,14 +12,17 @@ import { onSignUp } from "../../auth";
 import firebase from "../../firebase";
 
 //https://stackoverflow.com/questions/55855752/firebase-signinwithemailandpassword-not-firing-then-until-after-ui-focus-chan
-//export default ({ navigation }) => (
+//https://stackoverflow.com/questions/56725797/how-to-prevent-react-native-from-stucking-on-es6-promises
+//https://stackoverflow.com/questions/56044770/ui-doesnt-update-until-tap-on-the-screen-when-setstate-is-called-inside-a-realm
+//https://stackoverflow.com/questions/44867336/react-native-fetch-does-not-render-response-until-after-clicking-screen
+
 export default class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
-      email: "",
-      password: "",
+      email: "eric@gmail.com",
+      password: "password",
       error: "",
       loading: false
     };
@@ -32,20 +35,19 @@ export default class SignUp extends React.Component {
   }
 
   componentDidMount() {
+    console.log('SignUp.componentDidMount()');
     const { navigation } = this.props;
 
-    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (!user) {
-        console.log("User is not validated");
-        navigation.navigate("SignedOut");
-      } else {
-        console.log("User is validated");
-        console.log(user);
-        this.setState({ loading: false });
-        navigation.navigate("SignedIn");
-      }
-    });
-    console.log(this.unsubscribe);
+    // this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+    //   if (!user) {
+    //     console.log("SignUp.componentDidMount: user is invalid");
+    //     navigation.navigate("SignedOut");
+    //   } else {
+    //     console.log("SignUp.componentDidMount: user is authenticated");
+    //     this.setState({ loading: false });
+    //     navigation.navigate("SignedIn");
+    //   }
+    // });
   }
 
   componentWillUnmount() {

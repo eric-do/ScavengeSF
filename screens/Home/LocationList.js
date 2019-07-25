@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   list:{
-    width: '90%'
+    width: '100%',
   },
   item: {
     padding: 10,
@@ -83,7 +83,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 200
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   thumbnailOverlay: {
     position: 'absolute', 

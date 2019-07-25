@@ -23,7 +23,7 @@ class AchievementList extends React.Component {
     const achievements = this.state.achievements;
     console.log(achievements);
     return(
-      <View>
+      <View style={styles.container}>
         <FlatList 
           data={achievements}
           keyExtractor={item => item.id.toString()}
@@ -42,6 +42,10 @@ class AchievementList extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#EAF2F8',
+    flex: 1
+  },
   achievements: {
    alignItems: 'center'
   },

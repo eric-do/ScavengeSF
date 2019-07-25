@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { button, textinput } from "../../styles/global";
 import { onSignIn } from "../../auth";
+import firebase from "../../firebase";
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -29,6 +30,20 @@ export default class SignIn extends React.Component {
     this.handleError = this.handleError.bind(this);
   }
 
+  componentDidMount() {
+    const { navigation } = this.props;
+    console.log("Component is mounted");
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log("SignIn.componentDidMount: user is authenticated");
+        navigation.navigate("SignedIn");
+      } else {
+        console.log("SignIn.componentDidMount: user is invalid");
+        navigation.navigate("SignedOut");
+      }
+    })
+  }
+
   handleEmail(email) {
     this.setState({ email });
   }
@@ -38,14 +53,15 @@ export default class SignIn extends React.Component {
   }
 
   handleLogin() {
+    console.log('Function: handleLogin()');
     const { email, password } = this.state;
+   
     onSignIn({ email, password }, this.handleSuccess, this.handleError);
   }
 
   handleSuccess() {
-    const { navigation } = this.props;
-
-    navigation.navigate("SignedIn");
+    console.log('Function: handleSuccess()');
+    this.setState({ loading: false });
   }
 
   handleError(error) {
