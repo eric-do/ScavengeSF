@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from "react-native";
 import { button, textinput } from "../../styles/global";
 import { onSignIn } from "../../auth";
@@ -26,22 +27,18 @@ export default class SignIn extends React.Component {
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
-    this.handleSuccess = this.handleSuccess.bind(this);
     this.handleError = this.handleError.bind(this);
   }
 
   componentDidMount() {
     const { navigation } = this.props;
-    console.log("Component is mounted");
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("SignIn.componentDidMount: user is authenticated");
-        navigation.navigate("SignedIn");
-      } else {
-        console.log("SignIn.componentDidMount: user is invalid");
-        navigation.navigate("SignedOut");
-      }
-    })
+    firebase
+      .auth()
+      .onAuthStateChanged(user =>
+        user
+          ? navigation.navigate("SignedIn")
+          : navigation.navigate("SignedOut")
+      );
   }
 
   handleEmail(email) {
@@ -53,19 +50,12 @@ export default class SignIn extends React.Component {
   }
 
   handleLogin() {
-    console.log('Function: handleLogin()');
     const { email, password } = this.state;
-   
-    onSignIn({ email, password }, this.handleSuccess, this.handleError);
+    this.setState({ loading: true });
+    onSignIn({ email, password }, this.handleError);
   }
 
-  handleSuccess() {
-    console.log('Function: handleSuccess()');
-    this.setState({ loading: false });
-  }
-
-  handleError(error) {
-    const { message } = error;
+  handleError({ message }) {
     this.setState({ error: message, loading: false });
   }
 
@@ -76,7 +66,11 @@ export default class SignIn extends React.Component {
         style={styles.image}
         source={require("../../assets/city_bg.jpg")}
       >
-        <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={130}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior="padding"
+          keyboardVerticalOffset={130}
+        >
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Scavenge</Text>
           </View>
@@ -102,9 +96,13 @@ export default class SignIn extends React.Component {
                 <Text style={styles.signUpBtn}>Sign up</Text>
               </TouchableOpacity>
             </TouchableOpacity>
-            <Text style={styles.error}>{this.state.error}</Text>
           </View>
         </KeyboardAvoidingView>
+        {this.state.loading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="gray" />
+          </View>
+        ) : null}
       </ImageBackground>
     );
   }
@@ -123,15 +121,15 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     marginTop: 130,
-    alignItems: 'center'
-  }, 
+    alignItems: "center"
+  },
   inputContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '75%',
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "75%",
     marginTop: 100
   },
   title: {
@@ -159,5 +157,14 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "red"
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

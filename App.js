@@ -1,6 +1,15 @@
-import React from 'react';
-import { createRootNavigator } from './router';
-import firebase from './firebase';
+import React from "react";
+import { createRootNavigator } from "./router";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faUser,
+  faCrown,
+  faGlobeAsia,
+  faPlus,
+  faSignOutAlt
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(faUser, faCrown, faGlobeAsia, faPlus, faSignOutAlt);
 
 export default class App extends React.Component {
   static navigationOptions = {
@@ -15,13 +24,9 @@ export default class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-  
-  }
-
   render() {
     const { signedIn } = this.state;
     const Layout = createRootNavigator(signedIn);
     return <Layout />;
-  };
+  }
 }

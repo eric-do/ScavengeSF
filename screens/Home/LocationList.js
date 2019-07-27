@@ -1,41 +1,44 @@
-import React from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  FlatList, 
-  TouchableHighlight,
-  ImageBackground 
-} from 'react-native';
-import { SERVER } from '../../api';
-import { getLocations } from '../../api';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  ImageBackground,
+  Button
+} from "react-native";
+import { SERVER } from "../../api";
+import { getLocations } from "../../api";
+import { signOut } from "../../auth";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 export default class LocationList extends React.Component {
-
   static navigationOptions = ({ navigation }) => {
     return {
-      title: "Scavenge"
-    }
-  }
-
-  _isMounted = false; 
+      title: "Scavenge",
+      headerRight: (
+        <TouchableOpacity onPress={signOut} >
+          <FontAwesomeIcon
+            style={styles.logout}
+            icon="sign-out-alt"
+            size={20}
+            
+          />
+        </TouchableOpacity>
+      )
+    };
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       locations: []
-    }
+    };
   }
 
   componentDidMount() {
-    this._isMounted = true;
-    if (this._isMounted) {
-      getLocations(stateObj => this.setState(stateObj));
-    }
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
+    getLocations(stateObj => this.setState(stateObj));
   }
 
   render() {
@@ -49,32 +52,41 @@ export default class LocationList extends React.Component {
           keyExtractor={item => item.id.toString()}
           style={styles.list}
           renderItem={({ item }) => (
-            <View>  
-              <TouchableHighlight onPress={() => navigation.navigate('Landmarks', { id: item.id, location: item })} >
-                <ImageBackground style={styles.image}
-                       source={{ uri: `${SERVER}${item.url}` }} >
+            <View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Landmarks", {
+                    id: item.id,
+                    location: item
+                  })
+                }
+              >
+                <ImageBackground
+                  style={styles.image}
+                  source={{ uri: `${SERVER}${item.url}` }}
+                >
                   <View style={styles.thumbnailOverlay}>
                     <Text style={styles.thumbnailText}>{item.name}</Text>
                   </View>
                 </ImageBackground>
-              </TouchableHighlight>                       
+              </TouchableOpacity>
             </View>
           )}
         />
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
   },
-  list:{
-    width: '100%',
+  list: {
+    width: "100%"
   },
   item: {
     padding: 10,
@@ -82,23 +94,27 @@ const styles = StyleSheet.create({
     height: 44
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 200,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   thumbnailOverlay: {
-    position: 'absolute', 
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    top: 0, 
-    left: 0, 
-    right: 0, 
-    bottom: 0, 
-    justifyContent: 'center', 
-    alignItems: 'center'
+    position: "absolute",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center"
   },
   thumbnailText: {
-    color: 'white',
+    color: "white",
     fontSize: 30
+  },
+  logout: {
+    marginRight: 10,
+    color: 'gray'
   }
 });

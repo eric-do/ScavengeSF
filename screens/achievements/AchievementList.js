@@ -21,7 +21,7 @@ class AchievementList extends React.Component {
 
   render() {
     const achievements = this.state.achievements;
-    console.log(achievements);
+
     return(
       <View style={styles.container}>
         <FlatList 

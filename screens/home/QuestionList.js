@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import ListBox from '../../components/ListBox';
 import QuestionContainer from '../../components/QuestionContainer';
 import { getQuestionList } from '../../api';
-import { LinearGradient } from 'expo';
 
 class QuestionList extends React.Component {
   static navigationOptions = ({ navigation }) => {

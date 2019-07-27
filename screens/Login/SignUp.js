@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { button, textinput } from "../../styles/global";
 import { onSignUp } from "../../auth";
-import firebase from "../../firebase";
 
 //https://stackoverflow.com/questions/55855752/firebase-signinwithemailandpassword-not-firing-then-until-after-ui-focus-chan
 //https://stackoverflow.com/questions/56725797/how-to-prevent-react-native-from-stucking-on-es6-promises
@@ -34,25 +33,6 @@ export default class SignUp extends React.Component {
     this.handleSuccess = this.handleSuccess.bind(this);
   }
 
-  componentDidMount() {
-    console.log('SignUp.componentDidMount()');
-    const { navigation } = this.props;
-
-    // this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-    //   if (!user) {
-    //     console.log("SignUp.componentDidMount: user is invalid");
-    //     navigation.navigate("SignedOut");
-    //   } else {
-    //     console.log("SignUp.componentDidMount: user is authenticated");
-    //     this.setState({ loading: false });
-    //     navigation.navigate("SignedIn");
-    //   }
-    // });
-  }
-
-  componentWillUnmount() {
-  }
-
   handleUsername(username) {
     this.setState({ username });
   }
@@ -70,58 +50,60 @@ export default class SignUp extends React.Component {
 
     this.setState({ loading: true });
 
-    onSignUp({ email, password }, this.handleSuccess, this.handleError);
+    onSignUp({ email, password }, this.handleError);
   }
 
   handleSuccess() {
     const loading = false;
     const { navigation } = this.props;
 
-    console.log('Account was created');
     this.setState({ loading });
     navigation.navigate("SignedIn");
   }
 
-  handleError(error) {
-    const { code, message } = error;
-    console.log(message);
+  handleError({ message }) {
     this.setState({ error: message, loading: false });
   }
 
   render() {
-    return this.state.loading ? (
-      <View style={styles.container}>
-       <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    ) : (
+    const { navigation } = this.props;
+
+    return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-        <TextInput
-          style={textinput}
-          placeholder={"Email"}
-          onChangeText={this.handleEmail}
-          value={this.state.email}
-        />
-        <TextInput
-          style={textinput}
-          placeholder={"Username"}
-          onChangeText={this.handleUsername}
-          value={this.state.username}
-        />
-        <TextInput
-          style={textinput}
-          placeholder={"Password"}
-          onChangeText={this.handlePassword}
-          value={this.state.password}
-          secureTextEntry
-        />
-        <TouchableOpacity onPress={this.handleLogin}>
-          <View style={[styles.button, button]}>
-            <Text style={styles.buttonText}>Sign up</Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.error}>{this.state.error}</Text>
+          <TextInput
+            style={textinput}
+            placeholder={"Email"}
+            onChangeText={this.handleEmail}
+            value={this.state.email}
+          />
+          <TextInput
+            style={textinput}
+            placeholder={"Username"}
+            onChangeText={this.handleUsername}
+            value={this.state.username}
+          />
+          <TextInput
+            style={textinput}
+            placeholder={"Password"}
+            onChangeText={this.handlePassword}
+            value={this.state.password}
+            secureTextEntry
+          />
+          <TouchableOpacity onPress={this.handleLogin}>
+            <View style={[styles.button, button]}>
+              <Text style={styles.buttonText}>Sign up</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+            <Text style={styles.signInBtn}>Sign in</Text>
+          </TouchableOpacity>
         </View>
+        {this.state.loading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="gray" />
+          </View>
+        ) : null}
       </View>
     );
   }
@@ -135,9 +117,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   inputContainer: {
-    width: '75%',
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: "75%",
+    justifyContent: "center",
+    alignItems: "center"
   },
   input: {},
   button: {
@@ -152,7 +134,23 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 20
   },
+  signInBtn: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 16,
+    alignSelf: "center",
+    marginTop: 20
+  },
   error: {
-    color: 'red'
+    color: "red"
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

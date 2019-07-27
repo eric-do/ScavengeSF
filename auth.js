@@ -1,29 +1,39 @@
 import firebase from './firebase';
+import { Alert } from 'react-native';
 
-export const USER_KEY = "demo-key";
-
-export const onSignIn = async (options, successCB, errorCB) => {
-  const { email, password } = options;
-  console.log('Function: onSignIn()');
+export const onSignIn = async ({ email, password }, errorCB) => {
   try {
-    console.log('Function: onSignIn.firebase.auth().signInWithEmailAndPassword()');
-    //setTimeout(() => console.log('Running null function'), 2000);
     await firebase.auth().signInWithEmailAndPassword(email, password);
-    successCB();
   } catch (e) {
+    Alert.alert(e.message);
     errorCB(e);
   }
 }
 
-export const onSignUp = async (options, successCB, errorCB) => {
-  console.log('Function: onSignUp()');
-  const { email, password } = options;
-  
-  setTimeout(() => console.log('Running null function'), 5000);
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((authData) => {
-      console.log('createUserWithEmailAndPassword() then()');
-      console.log(authData);
-    })
-    .catch(e => errorCB(e));
+export const onSignUp = async ({ email, password }, errorCB) => {
+  try {
+    await firebase.auth().createUserWithEmailAndPassword(email, password);
+  } catch (e) {
+    Alert.alert(e.message);
+    errorCB(e);
+  }
+}
+
+export const signOut = async () => {
+  try {
+    await Alert.alert(
+      'Confirm',
+      'Are you sure you want to log out?',
+      [
+        {text: 'Yes', onPress: () => firebase.auth().signOut()},
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        }
+      ],
+      {cancelable: false},
+    );
+  } catch (e) {
+    Alert.alert('Something went wrong. Try again later.');
+  }
 }
