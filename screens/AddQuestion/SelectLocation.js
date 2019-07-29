@@ -8,6 +8,7 @@ import {
   Picker
 } from "react-native";
 import { button, textinput } from "../../styles/global";
+import { getLocations } from "../../api";
 
 export default class AddQuestion extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -15,16 +16,26 @@ export default class AddQuestion extends React.Component {
       title: "Select Location"
     };
   };
+
   constructor(props) {
     super(props);
     this.state = {
-      location: "San Francisco"
+      location: {},
+      locations: []
     };
     this.handlePicker = this.handlePicker.bind(this);
   }
 
-  handlePicker(value, index) {
-    this.setState({ location: value });
+  componentDidMount() {
+    getLocations(stateObj => {
+      stateObj.location = stateObj.locations[0];
+      this.setState(stateObj);
+    });
+  }
+
+  handlePicker(location, index) {
+    console.log(location);
+    this.setState({ location });
   }
 
   handleSubmit() {}
@@ -37,13 +48,18 @@ export default class AddQuestion extends React.Component {
         <Picker
           selectedValue={this.state.location}
           style={styles.picker}
-          onValueChange={(value, index) => this.handlePicker(value, index)}
+          onValueChange={(location, index) => this.handlePicker(location, index)}
         >
-          <Picker.Item label="San Francisco" value="San Francisco" />
-          <Picker.Item label="Tokyo" value="Tokyo" />
+          {this.state.locations.map(location => (
+            <Picker.Item
+              label={location.name}
+              value={location}
+              key={location.id}
+            />
+          ))}
         </Picker>
         <TouchableOpacity
-          onPress={() => navigation.navigate("AddQuestion", {})}
+          onPress={() => navigation.navigate("AddQuestion", this.state.location)}
         >
           <View style={[styles.button, button]}>
             <Text style={styles.buttonText}>Next</Text>

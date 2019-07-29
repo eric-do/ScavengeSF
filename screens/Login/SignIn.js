@@ -34,7 +34,7 @@ export default class SignIn extends React.Component {
     const { navigation } = this.props;
     firebase
       .auth()
-      .onAuthStateChanged(user =>
+      .onAuthStateChanged(user => 
         user
           ? navigation.navigate("SignedIn")
           : navigation.navigate("SignedOut")

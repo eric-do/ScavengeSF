@@ -6,6 +6,15 @@ export const SERVER = (typeof manifest.packagerOpts === `object`) && manifest.pa
   ? 'http://' + manifest.debuggerHost.split(`:`).shift().concat(`:3000`)
   : `api.example.com`;
 
+export const validateToken = async idToken => {
+  try {
+    const data = await fetch(`${SERVER}/validate-user?token=${idToken}`);
+    console.log('Token is valid!');
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 /* GETS */
 export const getLocations = async cb => {
   try {
