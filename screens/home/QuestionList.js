@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import ListBox from '../../components/ListBox';
 import QuestionContainer from '../../components/QuestionContainer';
 import { getQuestionList } from '../../api';
@@ -48,7 +48,9 @@ class QuestionList extends React.Component {
 
 const styles = StyleSheet.create({
   questions: {
-    alignItems: 'center'
+    alignItems: 'center', 
+    flex: 1,
+    backgroundColor: '#EAF2F8'
   },
   text: {
     alignSelf: 'center'

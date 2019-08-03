@@ -11,22 +11,25 @@ class AchievementList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      achievements: []
+      achievements: null
     }
   }
 
   componentDidMount() {
-    getAchievementList(1, (stateObj) => this.setState(stateObj));
+    this._navListener = this.props.navigation.addListener('didFocus', () => {
+      getAchievementList(1, (stateObj) => this.setState(stateObj));
+      });
   }
 
   render() {
     const achievements = this.state.achievements;
     console.log(achievements);
-    return(
-      <View>
+
+    return (
+      <View style={styles.container}>
         <FlatList 
           data={achievements}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item.achievementId.toString()}
           renderItem={({ item }) => (
             <ListBox>
               <View style={styles.achievements}>
@@ -42,6 +45,10 @@ class AchievementList extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#EAF2F8',
+    flex: 1
+  },
   achievements: {
    alignItems: 'center'
   },

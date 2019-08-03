@@ -5,10 +5,17 @@ import { StyleSheet,
          FlatList, 
          TouchableHighlight,
          ImageBackground } from 'react-native';
-import { SERVER } from 'react-native-dotenv';
+import { SERVER } from '../../api';
 import { getLandmarks } from '../../api';
 
 export default class LandmarkList extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('location').name
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
