@@ -52,7 +52,6 @@ class AnswerList extends React.Component {
   handleQuestionAttempt = async () => {
     const correct = this.state.answer ? this.state.answer.correct : false;
     const question = this.state.question;
-    const userId = this.state.userId;
     const token = await getUserToken();
 
     const options = {
