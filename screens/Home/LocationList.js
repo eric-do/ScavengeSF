@@ -9,7 +9,7 @@ import {
   Button
 } from "react-native";
 import { SERVER } from "../../api";
-import { getLocations } from "../../api";
+import { getLocations, validateToken } from "../../api";
 import { signOut } from "../../auth";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -39,6 +39,7 @@ export default class LocationList extends React.Component {
 
   componentDidMount() {
     getLocations(stateObj => this.setState(stateObj));
+    validateToken();
   }
 
   render() {

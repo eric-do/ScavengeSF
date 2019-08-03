@@ -37,3 +37,8 @@ export const signOut = async () => {
     Alert.alert('Something went wrong. Try again later.');
   }
 }
+
+export const getUserToken = async () => {
+  const idToken = await firebase.auth().currentUser.getIdToken(true);
+  return idToken;
+}

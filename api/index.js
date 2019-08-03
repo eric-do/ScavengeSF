@@ -1,19 +1,28 @@
 //import { SERVER } from 'react-native-dotenv';
 import constants from "expo-constants";
+import { getUserToken } from "../auth";
+
 const { manifest } = constants;
 
-export const SERVER = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
-  ? 'http://' + manifest.debuggerHost.split(`:`).shift().concat(`:3000`)
-  : `api.example.com`;
+export const SERVER =
+  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? "http://" +
+      manifest.debuggerHost
+        .split(`:`)
+        .shift()
+        .concat(`:3000`)
+    : `api.example.com`;
 
-export const validateToken = async idToken => {
+export const validateToken = async () => {
   try {
+    const idToken = await getUserToken();
     const data = await fetch(`${SERVER}/validate-user?token=${idToken}`);
-    console.log('Token is valid!');
+    const uid = await data.json();
+    console.log(uid);
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 /* GETS */
 export const getLocations = async cb => {
@@ -24,7 +33,7 @@ export const getLocations = async cb => {
   } catch (e) {
     console.error(`Couldn't get locations`, e);
   }
-}
+};
 
 export const getLandmarks = async (id, cb) => {
   try {
@@ -34,7 +43,7 @@ export const getLandmarks = async (id, cb) => {
   } catch (e) {
     console.error(`Couldn't get landmarks`, e);
   }
-}
+};
 
 export const getAnswerList = async (id, cb) => {
   try {
@@ -44,37 +53,41 @@ export const getAnswerList = async (id, cb) => {
   } catch (e) {
     console.error(`Couldn't get data`, e);
   }
-}
+};
 
 export const getQuestionList = async (id, cb) => {
   try {
     const data = await fetch(`${SERVER}/questions?id=${id}`);
     const questions = await data.json();
+    console.log(questions);
     cb({ questions });
   } catch (e) {
     console.error(`Couldn't get questions`, e);
   }
-}
+};
 
 export const getAchievementList = async (id, cb) => {
   try {
-    const data = await fetch(`${SERVER}/achievements?id=${id}`);
+    const token = await getUserToken();
+    const data = await fetch(`${SERVER}/achievements?id=${id}&token=${token}`);
     const achievements = await data.json();
     cb({ achievements });
   } catch (e) {
     console.error(`Error getting achievements`, e);
   }
-}
+};
 
 export const getUserVote = async (userId, questionId, cb) => {
   try {
-    const response = await fetch(`${SERVER}/get_vote?userId=${userId}&questionId=${questionId}`);
+    const response = await fetch(
+      `${SERVER}/get_vote?userId=${userId}&questionId=${questionId}`
+    );
     const data = await response.json();
     return data ? cb({ direction: data.direction }) : cb({ direction: 0 });
   } catch (e) {
-    console.error('Could not get user votes', e);
+    console.error("Could not get user votes", e);
   }
-}
+};
 
 export const getUpvotes = async (questionId, cb) => {
   try {
@@ -82,38 +95,39 @@ export const getUpvotes = async (questionId, cb) => {
     const upvotes = await data.json();
     cb(upvotes);
   } catch (e) {
-    console.error('Could not get upvotes', e);
+    console.error("Could not get upvotes", e);
   }
-}
+};
 
 export const getDownvotes = async (questionId, cb) => {
   try {
     const data = await fetch(`${SERVER}/downvotes?questionId=${questionId}`);
-    downvotes = await data.json();
+    const downvotes = await data.json();
     cb(downvotes);
   } catch (e) {
-    console.error('Could not get downvotes', e)
+    console.error("Could not get downvotes", e);
   }
-}
+};
 
 /* POSTS */
-export const updateQuestionsCompleted = (options, cb) => {
-  fetch(`${SERVER}/questions/`, options)
-    .then(response => response.text())
-    .then(data => { 
-      const achievement = data ? JSON.parse(data) : null;
-      const modalVisible = achievement ? true : false;
-      cb({ achievement, modalVisible });
-    })
-    .catch(e => console.error('request failed', e));
-}
+export const updateQuestionsCompleted = async (options, cb) => {
+  try {
+    const response = await fetch(`${SERVER}/questions/`, options);
+    const achievements = await response.json();
+    console.log(achievements);
+    const modalVisible = achievements.length > 0 ? true : false;
+    cb({ achievement: achievements[0], modalVisible });
+  } catch (e) {
+    console.error("request failed", e);
+  }
+};
 
 export const updateUserVote = (vote, cb) => {
   const { userId, questionId, direction } = vote;
   const options = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
     },
     body: `userId=${userId}&questionId=${questionId}&direction=${direction}`
   };
@@ -123,5 +137,5 @@ export const updateUserVote = (vote, cb) => {
     .then(data => {
       cb(data);
     })
-    .catch(e => console.error('Error sending vote', e));
-}
+    .catch(e => console.error("Error sending vote", e));
+};

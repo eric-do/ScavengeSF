@@ -5,6 +5,7 @@ import SubmitBox from '../../components/SubmitBox.js';
 import OptionButton from '../../components/OptionButton.js';
 import { getAnswerList, updateQuestionsCompleted, 
          updateUserVote, getUserVote } from '../../api';
+import { getUserToken } from '../../auth';          
 
 class AnswerList extends React.Component {
   constructor(props) {
@@ -25,15 +26,15 @@ class AnswerList extends React.Component {
     this.handleVote = this.handleVote.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     const { navigation } = this.props;
     const question = navigation.getParam('question', null);
     const questionId = question.id;
     const userId = this.state.userId;
 
     this.setState({ question });
-    getAnswerList(questionId, stateObj => this.setState(stateObj));
-    getUserVote(userId, questionId, stateObj => this.setState(stateObj));
+    await getAnswerList(questionId, stateObj => this.setState(stateObj));
+    await getUserVote(userId, questionId, stateObj => this.setState(stateObj));
   }
 
   handleModalVisibility(modalVisible) {
@@ -48,21 +49,22 @@ class AnswerList extends React.Component {
   /**
    * TODO: Fix this function so the "CONTINUE" button redirects away from the question
    */
-  handleQuestionAttempt() {
+  handleQuestionAttempt = async () => {
     const correct = this.state.answer ? this.state.answer.correct : false;
     const question = this.state.question;
     const userId = this.state.userId;
+    const token = await getUserToken();
 
     const options = {
       method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
-      body: `userId=${userId}&questionId=${question.id}`
+      body: `token=${token}&questionId=${question.id}`
     }
 
     if (correct) {
-      updateQuestionsCompleted(options, (stateObj) => this.setState(stateObj));
+      await updateQuestionsCompleted(options, (stateObj) => this.setState(stateObj));
     }
     this.setState({ correct: correct });
   }
