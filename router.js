@@ -10,6 +10,7 @@ import QuestionList from "./screens/Home/QuestionList.js";
 import AnswerList from "./screens/Home/AnswerList.js";
 import AchievementList from "./screens/Achievements/AchievementList.js";
 import SelectLocation from "./screens/AddQuestion/SelectLocation";
+import SelectLandmark from "./screens/AddQuestion/SelectLandmark";
 import AddQuestion from "./screens/AddQuestion/AddQuestion";
 import SignUp from "./screens/Login/SignUp";
 import SignIn from "./screens/Login/SignIn";
@@ -25,6 +26,7 @@ const ScavengeStack = createStackNavigator({
 
 const AddStack = createStackNavigator({
   SelectLocation: SelectLocation,
+  SelectLandmark: SelectLandmark,
   AddQuestion: AddQuestion
 });
 
