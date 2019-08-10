@@ -6,7 +6,7 @@ export const button = {
   borderRadius: 10,
   height: 50,
   width: 200,
-  backgroundColor: '#17A589'
+  //backgroundColor: '#17A589'
 };
 
 export const textinput = {

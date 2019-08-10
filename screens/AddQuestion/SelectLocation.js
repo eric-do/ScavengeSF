@@ -14,7 +14,8 @@ export default class AddQuestion extends React.Component {
     super(props);
     this.state = {
       location: {},
-      locations: []
+      locations: [],
+      locationName: ""
     };
     this.handlePicker = this.handlePicker.bind(this);
   }
@@ -32,8 +33,6 @@ export default class AddQuestion extends React.Component {
     );
     this.setState({ location, locationName });
   }
-
-  handleSubmit() {}
 
   render() {
     const { navigation } = this.props;
@@ -56,7 +55,9 @@ export default class AddQuestion extends React.Component {
         </Picker>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("SelectLandmark", { location: this.state.location })
+            navigation.navigate("SelectLandmark", {
+              location: this.state.location
+            })
           }
         >
           <View style={[styles.button, button]}>
@@ -78,7 +79,8 @@ const styles = StyleSheet.create({
     width: "75%"
   },
   button: {
-    marginTop: 10
+    marginTop: 10,
+    backgroundColor: "#70EB92"
   },
   buttonText: {
     color: "white",

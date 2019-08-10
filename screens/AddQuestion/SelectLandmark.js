@@ -1,14 +1,7 @@
-import React, { Component } from 'react'
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Picker
-} from "react-native";
+import React, { Component } from "react";
+import { View, TouchableOpacity, Text, StyleSheet, Picker } from "react-native";
 import { button, textinput } from "../../styles/global";
 import { getLandmarks } from "../../api";
-
 
 export default class SelectLandmark extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -20,26 +13,76 @@ export default class SelectLandmark extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      landmarks: []
-    }
+      landmarks: [],
+      landmark: {},
+      landmarkName: ""
+    };
   }
 
-  componentDidMount = async () => {
+  componentDidMount() {
     const { navigation } = this.props;
     const location = navigation.getParam("location");
-    console.log("this is location");
-    console.log(location);
-    getLandmarks(location.id, stateObj => {
-      console.log(stateObj);
-      this.setState(stateObj);
+    getLandmarks(location.id, ({ landmarks }) => {
+      const landmark = landmarks[0];
+      this.setState({ landmark, landmarks });
     });
-  } 
+  }
+
+  handlePicker(landmarkName, index) {
+    const landmark = this.state.landmarks.find(
+      landmark => landmarkName === landmark.name
+    );
+    this.setState({ landmark, landmarkName });
+  }
+
   render() {
-    console.log(this.state.landmarks)
+    const { navigation } = this.props;
     return (
-      <View>
-        
+      <View style={styles.container}>
+        <Picker
+          selectedValue={this.state.landmarkName}
+          style={styles.picker}
+          onValueChange={(value, index) => this.handlePicker(value, index)}
+        >
+          {this.state.landmarks.map(landmark => (
+            <Picker.Item
+              label={landmark.name}
+              value={landmark.name}
+              key={landmark.id}
+            />
+          ))}
+        </Picker>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("AddQuestion", {
+              landmark: this.state.landmark
+            })
+          }
+        >
+          <View style={[styles.button, button]}>
+            <Text style={styles.buttonText}>Next</Text>
+          </View>
+        </TouchableOpacity>
       </View>
-    )
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
+  },
+  picker: {
+    width: "75%"
+  },
+  button: {
+    marginTop: 10,
+    backgroundColor: "#70EB92"
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16
+  }
+});

@@ -139,3 +139,20 @@ export const updateUserVote = (vote, cb) => {
     })
     .catch(e => console.error("Error sending vote", e));
 };
+
+export const addNewQuestion = async (question, cb) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+    },
+    body: `question=${question}`
+  }
+
+  try {
+    await fetch(`${SERVER}/users/questions`, options);    
+    cb(true)
+  } catch (e) {
+    cb(false);
+  }
+}

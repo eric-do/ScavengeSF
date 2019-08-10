@@ -12,6 +12,8 @@ import AchievementList from "./screens/Achievements/AchievementList.js";
 import SelectLocation from "./screens/AddQuestion/SelectLocation";
 import SelectLandmark from "./screens/AddQuestion/SelectLandmark";
 import AddQuestion from "./screens/AddQuestion/AddQuestion";
+import AddAnswer from "./screens/AddQuestion/AddAnswer";
+import QuestionSummary from "./screens/AddQuestion/QuestionSummary";
 import SignUp from "./screens/Login/SignUp";
 import SignIn from "./screens/Login/SignIn";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -27,7 +29,9 @@ const ScavengeStack = createStackNavigator({
 const AddStack = createStackNavigator({
   SelectLocation: SelectLocation,
   SelectLandmark: SelectLandmark,
-  AddQuestion: AddQuestion
+  AddQuestion: AddQuestion,
+  AddAnswer: AddAnswer,
+  QuestionSummary: QuestionSummary
 });
 
 const AchievementStack = createStackNavigator({

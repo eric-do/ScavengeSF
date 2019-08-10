@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { button, textinput } from "../../styles/global";
 
-export default class AddQuestion extends React.Component {
+export default class AddAnswer extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: "Add Question"
+      title: "Add Answer"
     };
   };
 
@@ -20,33 +20,41 @@ export default class AddQuestion extends React.Component {
     super(props);
     this.state = {
       text: "",
-      landmark: {}
-    };
-    this.handleInput = this.handleInput.bind(this);
-    this.navigateToAnswers = this.navigateToAnswers.bind(this);
+      question: {}
+    }
   }
 
   componentDidMount() {
     const { navigation } = this.props;
-    const landmark = navigation.getParam("landmark");
-    this.setState({ landmark });
+    const  question  = navigation.getParam("question");
+    this.setState({ question });
+  }
+
+  getUpdatedQuestion() {
+    const question = {...this.state.question};
+    question.answers.push({ text: this.state.text, correct: false });
+    return question;
+  }
+
+  navigateNext() {
+    const { navigation } = this.props;
+    const question = this.getUpdatedQuestion();
+    console.log(question);
+    navigation.push("AddAnswer", {
+      question
+    });
+  }
+
+  navigateDone() {
+    const { navigation } = this.props;
+    const question = this.getUpdatedQuestion();
+    navigation.navigate("QuestionSummary", {
+      question
+    });
   }
 
   handleInput(text) {
     this.setState({ text });
-  }
-
-  navigateToAnswers() {
-    const { navigation } = this.props;
-    const landmark = navigation.getParam("landmark");
-    const question = {
-      text: this.state.text,
-      landmarkId: landmark.id,
-      answers: []
-    }
-    navigation.navigate("AddAnswer", {
-      question
-    });
   }
 
   render() {
@@ -60,19 +68,26 @@ export default class AddQuestion extends React.Component {
           style={styles.textInput}
           multiline={true}
           numberOfLines={4}
-          placeholder={"Enter your question"}
-          onChangeText={this.handleInput}
+          placeholder={"Enter an answer"}
+          onChangeText={(text) => this.handleInput(text)}
           value={this.state.text}
         />
         <TouchableOpacity
-          onPress={this.navigateToAnswers}
+          onPress={() => this.navigateNext()}
         >
-          <View style={[styles.button, button]}>
+          <View style={[styles.nextButton, button]}>
             <Text style={styles.buttonText}>Next</Text>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.navigateDone()}
+        >
+          <View style={[styles.doneButton, button]}>
+            <Text style={styles.buttonText}>Done</Text>
+          </View>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
-    );
+    )
   }
 }
 
@@ -89,9 +104,13 @@ const styles = StyleSheet.create({
   picker: {
     width: "75%"
   },
-  button: {
+  nextButton: {
     marginTop: 10,
     backgroundColor: "#70EB92"
+  },
+  doneButton: {
+    marginTop: 10,
+    backgroundColor: "#2AD7C2"
   },
   buttonText: {
     color: "white",
