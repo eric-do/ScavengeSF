@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   TouchableOpacity,
@@ -21,17 +21,17 @@ export default class AddAnswer extends Component {
     this.state = {
       text: "",
       question: {}
-    }
+    };
   }
 
   componentDidMount() {
     const { navigation } = this.props;
-    const  question  = navigation.getParam("question");
+    const question = navigation.getParam("question");
     this.setState({ question });
   }
 
   getUpdatedQuestion() {
-    const question = {...this.state.question};
+    const question = { ...this.state.question };
     question.answers.push({ text: this.state.text, correct: false });
     return question;
   }
@@ -69,25 +69,21 @@ export default class AddAnswer extends Component {
           multiline={true}
           numberOfLines={4}
           placeholder={"Enter an answer"}
-          onChangeText={(text) => this.handleInput(text)}
+          onChangeText={text => this.handleInput(text)}
           value={this.state.text}
         />
-        <TouchableOpacity
-          onPress={() => this.navigateNext()}
-        >
+        <TouchableOpacity onPress={() => this.navigateNext()}>
           <View style={[styles.nextButton, button]}>
             <Text style={styles.buttonText}>Next</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.navigateDone()}
-        >
+        <TouchableOpacity onPress={() => this.navigateDone()}>
           <View style={[styles.doneButton, button]}>
             <Text style={styles.buttonText}>Done</Text>
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 

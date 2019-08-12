@@ -141,12 +141,14 @@ export const updateUserVote = (vote, cb) => {
 };
 
 export const addNewQuestion = async (question, cb) => {
+  //const { text, answers, landmarkId } = question;
   const options = {
     method: "POST",
     headers: {
       "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
     },
-    body: `question=${question}`
+    //body: `text=${text}&answers=${JSON.stringify(answers)}&landmarkId=${landmarkId}}`
+    body: `question=${JSON.stringify(question)}`
   }
 
   try {
