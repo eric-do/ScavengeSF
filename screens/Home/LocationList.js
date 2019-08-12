@@ -53,7 +53,7 @@ export default class LocationList extends React.Component {
           keyExtractor={item => item.id.toString()}
           style={styles.list}
           renderItem={({ item }) => (
-            <View>
+            <View style={styles.locationCard}>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("Landmarks", {
@@ -82,12 +82,24 @@ export default class LocationList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#EAF2F8',
     alignItems: "center",
     justifyContent: "center"
   },
   list: {
     width: "100%"
+  },
+  locationCard: {
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+    	width: 0,
+    	height: 1,
+    },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    elevation: 2,
+
   },
   item: {
     padding: 10,
