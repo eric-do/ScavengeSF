@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { getUpvotes, getDownvotes } from '../api';
-
+import UpvoteIcon from "./UpvoteIcon";
+import DownvoteIcon from "./DownvoteIcon";
 export default class QuestionContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -31,11 +32,13 @@ export default class QuestionContainer extends React.Component {
 
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <Text style={styles.upvoteText}>Upvotes: {upvotes ? upvotes : 0}</Text>
+            <UpvoteIcon/>
+            <Text style={styles.upvoteText}>{upvotes ? upvotes : 0}</Text>
           </View>
 
           <View style={styles.button}>
-            <Text style={styles.downvoteText}>Downvotes: {downvotes ? downvotes : 0}</Text>
+            <DownvoteIcon />
+            <Text style={styles.downvoteText}>{downvotes ? downvotes : 0}</Text>
           </View>
 
         </View>
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
     paddingLeft: 15,
     paddingRight: 15,
   },
@@ -71,9 +75,11 @@ const styles = StyleSheet.create({
     color: '#3498DB'
   },
   upvoteText: {
-    color: 'green'
+    color: 'green',
+    marginLeft: 5
   },
   downvoteText: {
-    color: 'orange'
+    color: 'orange',
+    marginLeft: 5
   }
 })
