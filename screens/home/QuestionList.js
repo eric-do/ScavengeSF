@@ -1,63 +1,57 @@
-import React from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
-import ListBox from '../../components/ListBox';
-import QuestionContainer from '../../components/QuestionContainer';
-import { getQuestionList } from '../../api';
+import React, { useEffect, useState} from "react";
+import { StyleSheet, View, FlatList } from "react-native";
+import ListBox from "../../components/ListBox";
+import QuestionContainer from "../../components/QuestionContainer";
+import { getQuestionList } from "../../api";
 
-class QuestionList extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('landmark').name
-    }
-  }
-    
-  constructor(props) {
-    super(props);
-    this.state = {
-      questions: []
-    }
-  }
+export default (QuestionList = props => {
+  const [ questions, setQuestions ] = useState([]);
+  const { navigation } = props;
 
-  componentDidMount() {
-    const { navigation } = this.props;
-    const id = navigation.getParam('id', 1);
-    getQuestionList(id, (stateObj) => this.setState(stateObj));
-  }
+  useEffect(() => {
+    getQuestionList(navigation.getParam("id", 1), stateObj => {
+      const { questions } = stateObj;
+      setQuestions(questions);
+    });
+  }, []);
 
-  render() {
-    const questions = this.state.questions;
-    return (
-      <View style={styles.questions}>
-        <FlatList
-          data={questions}
-          style={styles.list}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => ( 
-            <ListBox 
-              key={item.id}
-              pressHandler={() => this.props.navigation.navigate('Answers', { question: item })}
-            >
-                <QuestionContainer question={item}/>
-            </ListBox>                
-          )}
-        />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.questions}>
+      <FlatList
+        data={questions}
+        style={styles.list}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => (
+          <ListBox
+            key={item.id}
+            pressHandler={() =>
+              navigation.navigate("Answers", { question: item })
+            }
+          >
+            <QuestionContainer question={item} />
+          </ListBox>
+        )}
+      />
+    </View>
+  );
+});
+
+QuestionList.navigationOptions = ({ navigation }) => {
+  return {
+    title: navigation.getParam("landmark").name
+  };
+};
 
 const styles = StyleSheet.create({
   questions: {
-    alignItems: 'center', 
+    alignItems: "center",
     flex: 1,
-    backgroundColor: '#EAF2F8'
+    backgroundColor: "#EAF2F8"
   },
   text: {
-    alignSelf: 'center'
+    alignSelf: "center"
   },
   list: {
-    width: '100%'
+    width: "100%"
   }
 });
-
-export default QuestionList;

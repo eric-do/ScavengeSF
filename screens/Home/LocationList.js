@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,78 +6,72 @@ import {
   FlatList,
   TouchableOpacity,
   ImageBackground,
-  Button
 } from "react-native";
 import { SERVER } from "../../api";
 import { getLocations, validateToken } from "../../api";
 import { signOut } from "../../auth";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-export default class LocationList extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Scavenge",
-      headerRight: (
-        <TouchableOpacity onPress={signOut} >
-          <FontAwesomeIcon
-            style={styles.logout}
-            icon="sign-out-alt"
-            size={20}
-            
-          />
-        </TouchableOpacity>
-      )
-    };
-  };
+export default LocationList = props => {
+  const [ locations, setLocations ] = useState([]);
+  const { navigation } = props;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      locations: []
-    };
-  }
+  useEffect(() => {
+    getLocations(stateObj => {
+      const { locations } = stateObj;
+      setLocations(locations);  
+    });
 
-  componentDidMount() {
-    getLocations(stateObj => this.setState(stateObj));
     validateToken();
-  }
+  }, []);
 
-  render() {
-    const { locations } = this.state;
-    const { navigation } = this.props;
-
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={locations}
-          keyExtractor={item => item.id.toString()}
-          style={styles.list}
-          renderItem={({ item }) => (
-            <View style={styles.locationCard}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Landmarks", {
-                    id: item.id,
-                    location: item
-                  })
-                }
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={locations}
+        keyExtractor={item => item.id.toString()}
+        style={styles.list}
+        renderItem={({ item }) => (
+          <View style={styles.locationCard}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Landmarks", {
+                  id: item.id,
+                  location: item
+                })
+              }
+            >
+              <ImageBackground
+                style={styles.image}
+                source={{ uri: `${SERVER}${item.url}` }}
               >
-                <ImageBackground
-                  style={styles.image}
-                  source={{ uri: `${SERVER}${item.url}` }}
-                >
-                  <View style={styles.thumbnailOverlay}>
-                    <Text style={styles.thumbnailText}>{item.name}</Text>
-                  </View>
-                </ImageBackground>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-      </View>
-    );
-  }
+                <View style={styles.thumbnailOverlay}>
+                  <Text style={styles.thumbnailText}>{item.name}</Text>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </View>
+  );
 }
+
+LocationList.navigationOptions = ({ navigation }) => {
+  return {
+    title: "Scavenge",
+    headerRight: (
+      <TouchableOpacity onPress={signOut} >
+        <FontAwesomeIcon
+          style={styles.logout}
+          icon="sign-out-alt"
+          size={20}
+          
+        />
+      </TouchableOpacity>
+    )
+  };
+};
 
 const styles = StyleSheet.create({
   container: {

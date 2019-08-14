@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,61 +10,57 @@ import {
 import { SERVER } from "../../api";
 import { getLandmarks } from "../../api";
 
-export default class LandmarkList extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam("location").name
-    };
-  };
+export default LandmarkList = props => {
+  const [ landmarks, setLandmarks ] = useState([]);
+  const { navigation } = props;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      landmarks: []
-    };
-  }
-
-  componentDidMount() {
-    const { navigation } = this.props;
+  useEffect(() => {  
+    const { navigation } = props;
     const id = navigation.getParam("id", 1);
-    getLandmarks(id, stateObj => this.setState(stateObj));
-  }
+    getLandmarks(id, stateObj => {
+      const { landmarks } = stateObj;
+      setLandmarks(landmarks);
+    });
+  }, []) 
 
-  render() {
-    const { navigation } = this.props;
-
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={this.state.landmarks}
-          keyExtractor={item => item.id.toString()}
-          style={styles.list}
-          renderItem={({ item }) => (
-            <View style={styles.landmarkCard}>
-              <TouchableHighlight
-                onPress={() =>
-                  navigation.navigate("Questions", {
-                    id: item.id,
-                    landmark: item
-                  })
-                }
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={landmarks}
+        keyExtractor={item => item.id.toString()}
+        style={styles.list}
+        renderItem={({ item }) => (
+          <View style={styles.landmarkCard}>
+            <TouchableHighlight
+              onPress={() =>
+                navigation.navigate("Questions", {
+                  id: item.id,
+                  landmark: item
+                })
+              }
+            >
+              <ImageBackground
+                style={styles.image}
+                source={{ uri: `${SERVER}${item.url}` }}
               >
-                <ImageBackground
-                  style={styles.image}
-                  source={{ uri: `${SERVER}${item.url}` }}
-                >
-                  <View style={styles.thumbnailOverlay}>
-                    <Text style={styles.thumbnailText}>{item.name}</Text>
-                  </View>
-                </ImageBackground>
-              </TouchableHighlight>
-            </View>
-          )}
-        />
-      </View>
-    );
-  }
+                <View style={styles.thumbnailOverlay}>
+                  <Text style={styles.thumbnailText}>{item.name}</Text>
+                </View>
+              </ImageBackground>
+            </TouchableHighlight>
+          </View>
+        )}
+      />
+    </View>
+  );
 }
+
+
+LandmarkList.navigationOptions = ({ navigation }) => {
+  return {
+    title: navigation.getParam("location").name
+  };
+};
 
 const styles = StyleSheet.create({
   container: {
