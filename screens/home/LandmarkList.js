@@ -15,7 +15,6 @@ export default LandmarkList = props => {
   const { navigation } = props;
 
   useEffect(() => {  
-    const { navigation } = props;
     const id = navigation.getParam("id", 1);
     getLandmarks(id, stateObj => {
       const { landmarks } = stateObj;
