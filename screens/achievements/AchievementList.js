@@ -1,48 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import ListBox from '../../components/ListBox';
 import { getAchievementList } from '../../api';
 
-class AchievementList extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Achievements'
-  });
+const AchievementList = props => {
+  const [ achievements, setAchievements ] = useState(null);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      achievements: null
-    }
-  }
+  useEffect(() => {
+    const { navigation } = props;
+    navigation.addListener('didFocus', () => {
+      getAchievementList(1, ({achievements}) => setAchievements(achievements))
+    })
+  }, [])
 
-  componentDidMount() {
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
-      getAchievementList(1, (stateObj) => this.setState(stateObj));
-      });
-  }
 
-  render() {
-    const achievements = this.state.achievements;
-    console.log(achievements);
-
-    return (
-      <View style={styles.container}>
-        <FlatList 
-          data={achievements}
-          keyExtractor={item => item.achievementId.toString()}
-          renderItem={({ item }) => (
-            <ListBox>
-              <View style={styles.achievements}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-              </View>
-            </ListBox>
-          )}
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <FlatList 
+        data={achievements}
+        keyExtractor={item => item.achievementId.toString()}
+        renderItem={({ item }) => (
+          <ListBox>
+            <View style={styles.achievements}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.description}>{item.description}</Text>
+            </View>
+          </ListBox>
+        )}
+      />
+    </View>
+  );
 }
+
+
+AchievementList.navigationOptions = ({ navigation }) => ({
+  title: 'Achievements'
+});
 
 const styles = StyleSheet.create({
   container: {
