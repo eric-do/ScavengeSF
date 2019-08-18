@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -12,82 +12,71 @@ import {
 import { addNewQuestion } from "../../api";
 import { button, textinput } from "../../styles/global";
 
-export default class QuestionSummary extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Confirm"
-    };
-  };
+export default QuestionSummary = props => {
+  const { navigation } = props;
+  const question = navigation.getParam("question");
+  const [ text, setText ] = useState(question.text);
+  const [ landmarkId, setLandmarkId ] = useState(question.landmarkId);
+  const [ answers , setAnswers ] = useState(question.answers);
+  
+  console.log(answers);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: "",
-      landmarkId: 0,
-      answers: []
-    };
-  }
-
-  componentDidMount() {
-    const { navigation } = this.props;
-    const question = navigation.getParam("question");
-    const { text, landmarkId, answers } = question;
-    this.setState({ text, landmarkId, answers });
-  }
-
-  handleChange(index, value) {
-    const answers = [...this.state.answers];
-    answers[index].correct = value;
+  const handleChange = (index, value) => {
+    console.log("index: " + index)
     console.log(answers);
-    this.setState({ answers });
+     const newAnwers = [...answers];
+    newAnwers[index].correct = value;
+    setAnswers(newAnwers);
   }
 
-  handleSubmit() {
-    const { text, landmarkId, answers } = this.state;
+  const handleSubmit = () => {
     const question = { text, landmarkId, answers };
     addNewQuestion(question, () => console.log("submitted"));
   }
 
-  render() {
-    console.log("Rendering");
-    const { text, landmarkId, answers } = this.state;
+  console.log("Rendering");
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.section}>
-          <Text style={styles.questionText}>{text}</Text>
-        </View>
-        <View style={styles.section}>
-          <FlatList
-            data={answers}
-            keyExtractor={item => item.text}
-            style={styles.list}
-            renderItem={({ item, index }) => (
-              <View style={styles.answerEntry}>
-                <View style={styles.answerTextView}>
-                  <Text style={styles.answerText}>{item.text}</Text>
-                </View>
-                <View style={styles.answerToggle}>
-                  <Switch
-                    onValueChange={bool => this.handleChange(index, bool)}
-                    value={item.correct}
-                  />
-                </View>
-              </View>
-            )}
-          />
-        </View>
-        <View style={styles.section}>
-          <TouchableOpacity onPress={() => this.handleSubmit()}>
-            <View style={[styles.button, button]}>
-              <Text style={styles.buttonText}>Done</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.section}>
+        <Text style={styles.questionText}>{text}</Text>
       </View>
-    );
-  }
+      <View style={styles.section}>
+        <FlatList
+          data={answers}
+          keyExtractor={item => item.text}
+          style={styles.list}
+          renderItem={({ item, index }) => (
+            <View style={styles.answerEntry}>
+              <View style={styles.answerTextView}>
+                <Text style={styles.answerText}>{item.text}</Text>
+              </View>
+              <View style={styles.answerToggle}>
+                <Switch
+                  onValueChange={bool => handleChange(index, bool)}
+                  value={item.correct}
+                />
+              </View>
+            </View>
+          )}
+        />
+      </View>
+      <View style={styles.section}>
+        <TouchableOpacity onPress={() => handleSubmit()}>
+          <View style={[styles.button, button]}>
+            <Text style={styles.buttonText}>Done</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
+
+QuestionSummary.navigationOptions = ({ navigation }) => {
+  return {
+    title: "Confirm"
+  };
+};
 
 const styles = StyleSheet.create({
   container: {

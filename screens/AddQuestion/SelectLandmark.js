@@ -9,7 +9,7 @@ export default class SelectLandmark extends Component {
       title: "Select Landmark"
     };
   };
-
+ 
   constructor(props) {
     super(props);
     this.state = {

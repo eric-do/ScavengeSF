@@ -15,6 +15,7 @@ export default AnswerList = props => {
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ achievement, setAchievement ] = useState(null);
   const [ answer, setAnswer ] = useState(null);
+  // const answer = useAnswerHook();
   const [ correct, setCorrect ] = useState(null);
   const [ direction, setDirection ] = useState(0);
 
@@ -33,13 +34,11 @@ export default AnswerList = props => {
 
  
   const handleModalVisibility = modalVisible => {
-    setModalVisible(modalVisible);
+    setModalVisible(modalVisible);  
   };
 
-  const updateAnswer = newAnswer => {
-    const answer = answer && answer.id === newAnswer.id ? null : newAnswer;
-    setAnswer(answer);
-  };
+
+  const updateAnswer = newAnswer => setAnswer(answer && answer.id === newAnswer.id ? null : newAnswer);
 
   /**
    * TODO: Fix this function so the "CONTINUE" button redirects away from the question
@@ -110,6 +109,18 @@ export default AnswerList = props => {
         />
     </View>
   );
+}
+
+const useAnswerHook = (newAnswer) => {
+  const [ answer, setAnswer ] = useState({});
+
+  console.log('Using custom hook');
+  useEffect(() => {
+    const answer = answer && answer.id === newAnswer.id ? null : newAnswer;
+    setAnswer(answer);
+  })
+  
+  return answer;
 }
 
 const styles = StyleSheet.create({
