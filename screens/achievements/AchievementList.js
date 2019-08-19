@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
+import PropTypes from 'prop-types';
 import ListBox from '../../components/ListBox';
 import { getAchievementList } from '../../api';
+import styles from './AchievementListStyle';
 
-const AchievementList = props => {
-  const [ achievements, setAchievements ] = useState(null);
+const AchievementList = () => {
+  const [achievements, setAchievements] = useState(null);
 
   useEffect(() => {
-    const { navigation } = props;
-    navigation.addListener('didFocus', () => {
-      getAchievementList(1, ({achievements}) => setAchievements(achievements))
-    })
-  }, [])
+    getAchievementList(1, ({ achievements }) => setAchievements(achievements));
+  }, []);
 
-
+  console.log('rerender achievements');
   return (
     <View style={styles.container}>
-      <FlatList 
+      <FlatList
         data={achievements}
         keyExtractor={item => item.achievementId.toString()}
         renderItem={({ item }) => (
@@ -30,30 +29,22 @@ const AchievementList = props => {
       />
     </View>
   );
-}
+};
 
-
-AchievementList.navigationOptions = ({ navigation }) => ({
-  title: 'Achievements'
+AchievementList.navigationOptions = () => ({
+  title: 'Achievements',
 });
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#EAF2F8',
-    flex: 1
-  },
-  achievements: {
-   alignItems: 'center'
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#3498DB',
-    marginBottom: 10
-  },
-  description: {
-    fontSize: 14,
-  }
-});
+AchievementList.defaultProps = {
+  navigation: {},
+};
+
+AchievementList.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+    addListener: PropTypes.func,
+  }),
+};
 
 export default AchievementList;
