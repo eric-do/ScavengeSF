@@ -1,100 +1,74 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
   Text,
-  StyleSheet,
   TextInput,
-  KeyboardAvoidingView
-} from "react-native";
-import { button, textinput } from "../../styles/global";
+  KeyboardAvoidingView,
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { button } from '../../styles/global';
+import styles from './AddQuestionStyle';
 
-export default class AddQuestion extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Add Question"
-    };
+const AddQuestion = props => {
+  const { navigation } = props;
+  const landmark = navigation.getParam('landmark');
+  const [ text, setText ] = useState('');
+
+  const handleInput = text => {
+    setText(text);
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: "",
-      landmark: {}
-    };
-    this.handleInput = this.handleInput.bind(this);
-    this.navigateToAnswers = this.navigateToAnswers.bind(this);
-  }
-
-  componentDidMount() {
-    const { navigation } = this.props;
-    const landmark = navigation.getParam("landmark");
-    this.setState({ landmark });
-  }
-
-  handleInput(text) {
-    this.setState({ text });
-  }
-
-  navigateToAnswers() {
-    const { navigation } = this.props;
-    const landmark = navigation.getParam("landmark");
+  const navigateToAnswers = () => {
     const question = {
-      text: this.state.text,
+      text,
       landmarkId: landmark.id,
-      answers: []
-    }
-    navigation.navigate("AddAnswer", {
-      question
+      answers: [],
+    };
+
+    navigation.navigate('AddAnswer', {
+      question,
     });
-  }
+  };
 
-  render() {
-    return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior="padding"
-        keyboardVerticalOffset={130}
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+      keyboardVerticalOffset={130}
+    >
+      <TextInput
+        style={styles.textInput}
+        multiline
+        numberOfLines={4}
+        placeholder="Enter your question"
+        onChangeText={handleInput}
+        value={text}
+      />
+      <TouchableOpacity
+        onPress={navigateToAnswers}
       >
-        <TextInput
-          style={styles.textInput}
-          multiline={true}
-          numberOfLines={4}
-          placeholder={"Enter your question"}
-          onChangeText={this.handleInput}
-          value={this.state.text}
-        />
-        <TouchableOpacity
-          onPress={this.navigateToAnswers}
-        >
-          <View style={[styles.button, button]}>
-            <Text style={styles.buttonText}>Next</Text>
-          </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-    );
-  }
-}
+        <View style={[styles.button, button]}>
+          <Text style={styles.buttonText}>Next</Text>
+        </View>
+      </TouchableOpacity>
+    </KeyboardAvoidingView>
+  );
+};
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  textInput: {
-    paddingLeft: 5,
-    paddingRight: 5
-  },
-  picker: {
-    width: "75%"
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: "#70EB92"
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16
-  }
+AddQuestion.navigationOptions = () => ({
+  title: 'Add Question',
 });
+
+AddQuestion.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+  }),
+};
+
+AddQuestion.defaultProps = {
+  navigation: {},
+};
+
+export default AddQuestion;
