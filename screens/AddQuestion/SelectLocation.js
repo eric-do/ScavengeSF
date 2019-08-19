@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Picker } from "react-native";
-import { button, textinput } from "../../styles/global";
-import { getLocations } from "../../api";
+import React, { useEffect, useState } from 'react';
+import {
+  View, 
+  TouchableOpacity, 
+  Text,
+  Picker, 
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { button } from '../../styles/global';
+import { getLocations } from '../../api';
+import styles from './SelectLocationStyle';
 
-export default SelectLocation = props => {
-  
+const SelectLocation = props => {
   const [location, setLocation] = useState({});
   const [locations, setLocations] = useState([]);
   const { navigation } = props;
 
-  console.log('before useeffect');
   useEffect(() => {
     getLocations(({ locations }) => {
       setLocation(locations[0]);
       setLocations(locations);
-      console.log(locations);
     });
   }, []);
 
-  const handlePicker = (locationName, index) => {
-    setLocation(locations.find(location => locationName === location.name));
-  }
+  const handlePicker = locationName => {
+    setLocation(locations.find(loc => locationName === loc.name));
+  };
 
   return (
     <View style={styles.container}>
@@ -31,18 +35,18 @@ export default SelectLocation = props => {
         onValueChange={(value, index) => handlePicker(value, index)}
       >
         {
-          locations.length > 0 ?
-          locations.map(location => (
-          <Picker.Item
-            label={location.name}
-            value={location.name}
-            key={location.id}
-          /> 
-        )) : null
+          locations.length > 0
+            ? locations.map(locationList => (
+              <Picker.Item
+                label={locationList.name}
+                value={locationList.name}
+                key={locationList.id}
+              /> 
+            )) : null
         }
       </Picker>
       <TouchableOpacity
-        onPress={() => navigation.navigate("SelectLandmark", { location })}
+        onPress={() => navigation.navigate('SelectLandmark', { location })}
       >
         <View style={[styles.button, button]}>
           <Text style={styles.buttonText}>Next</Text>
@@ -52,27 +56,19 @@ export default SelectLocation = props => {
   );
 };
 
-SelectLocation.navigationOptions = ({ navigation }) => {
-  return {
-    title: "Select Location"
-  };
+SelectLocation.navigationOptions = () => ({
+  title: 'Select Location',
+});
+
+SelectLocation.defaultProps = {
+  navigation: {},
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  picker: {
-    width: "75%"
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: "#70EB92"
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16
-  }
-});
+SelectLocation.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+  }),
+};
+
+export default SelectLocation;

@@ -4,35 +4,29 @@ import {
   TouchableOpacity,
   Text,
   FlatList,
-  StyleSheet,
-  Switch
+  Switch,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { addNewQuestion } from '../../api';
 import { button } from '../../styles/global';
+import styles from './QuestionSummaryStyle';
 
-export default QuestionSummary = props => {
+const QuestionSummary = props => {
   const { navigation } = props;
   const question = navigation.getParam('question');
-  const [ text, setText ] = useState(question.text);
-  const [ landmarkId, setLandmarkId ] = useState(question.landmarkId);
-  const [ answers, setAnswers ] = useState(question.answers);
-  
-  console.log(answers);
+  const { text, landmarkId } = question;
+  const [answers, setAnswers] = useState(question.answers);
 
   const handleChange = (index, value) => {
-    console.log('index: ' + index)
-    console.log(answers);
     const newAnwers = [...answers];
     newAnwers[index].correct = value;
     setAnswers(newAnwers);
   };
 
   const handleSubmit = () => {
-    const question = { text, landmarkId, answers };
-    addNewQuestion(question, () => console.log('submitted'));
+    const newQuestion = { text, landmarkId, answers };
+    addNewQuestion(newQuestion, () => navigation.navigate('Scavenge'));
   };
-
-  console.log('Rendering');
 
   return (
     <View style={styles.container}>
@@ -68,64 +62,21 @@ export default QuestionSummary = props => {
       </View>
     </View>
   );
-}
-
-QuestionSummary.navigationOptions = ({ navigation }) => {
-  return {
-    title: 'Confirm'
-  };
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1
-  },
-  section: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '80%',
-    flex: 1
-  },
-  questionText: {
-    fontSize: 18
-  },
-  answerEntry: {
-    flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 10
-  },
-  answerTextView: {
-    width: '60%', 
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    marginRight: 20
-  },
-  answerToggle: {
-    width: '40%', 
-    alignItems: 'flex-start' ,
-    justifyContent: 'center',
-  },
-  answerText: {
-    fontSize: 16
-  },
-  textInput: {
-    paddingLeft: 5,
-    paddingRight: 5
-  },
-  picker: {
-    width: '75%'
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: '#70EB92'
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16
-  },
-  list: {
-    width: '100%'
-  }
+QuestionSummary.navigationOptions = () => ({
+  title: 'Confirm',
 });
+
+QuestionSummary.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+  }),
+};
+
+QuestionSummary.defaultProps = {
+  navigation: {},
+};
+
+export default QuestionSummary;
