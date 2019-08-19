@@ -1,40 +1,38 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
   Text,
   FlatList,
   StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
   Switch
-} from "react-native";
-import { addNewQuestion } from "../../api";
-import { button, textinput } from "../../styles/global";
+} from 'react-native';
+import { addNewQuestion } from '../../api';
+import { button } from '../../styles/global';
 
 export default QuestionSummary = props => {
   const { navigation } = props;
-  const question = navigation.getParam("question");
+  const question = navigation.getParam('question');
   const [ text, setText ] = useState(question.text);
   const [ landmarkId, setLandmarkId ] = useState(question.landmarkId);
-  const [ answers , setAnswers ] = useState(question.answers);
+  const [ answers, setAnswers ] = useState(question.answers);
   
   console.log(answers);
 
   const handleChange = (index, value) => {
-    console.log("index: " + index)
+    console.log('index: ' + index)
     console.log(answers);
-     const newAnwers = [...answers];
+    const newAnwers = [...answers];
     newAnwers[index].correct = value;
     setAnswers(newAnwers);
-  }
+  };
 
   const handleSubmit = () => {
     const question = { text, landmarkId, answers };
-    addNewQuestion(question, () => console.log("submitted"));
-  }
+    addNewQuestion(question, () => console.log('submitted'));
+  };
 
-  console.log("Rendering");
+  console.log('Rendering');
 
   return (
     <View style={styles.container}>
@@ -74,40 +72,40 @@ export default QuestionSummary = props => {
 
 QuestionSummary.navigationOptions = ({ navigation }) => {
   return {
-    title: "Confirm"
+    title: 'Confirm'
   };
 };
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1
   },
   section: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "80%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '80%',
     flex: 1
   },
   questionText: {
     fontSize: 18
   },
   answerEntry: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 10,
     marginBottom: 10
   },
   answerTextView: {
-    width: "60%", 
-    alignItems: "flex-end",
-    justifyContent: "center",
+    width: '60%', 
+    alignItems: 'flex-end',
+    justifyContent: 'center',
     marginRight: 20
   },
   answerToggle: {
-    width: "40%", 
-    alignItems: "flex-start" ,
-    justifyContent: "center",
+    width: '40%', 
+    alignItems: 'flex-start' ,
+    justifyContent: 'center',
   },
   answerText: {
     fontSize: 16
@@ -117,17 +115,17 @@ const styles = StyleSheet.create({
     paddingRight: 5
   },
   picker: {
-    width: "75%"
+    width: '75%'
   },
   button: {
     marginTop: 10,
-    backgroundColor: "#70EB92"
+    backgroundColor: '#70EB92'
   },
   buttonText: {
-    color: "white",
+    color: 'white',
     fontSize: 16
   },
   list: {
-    width: "100%"
+    width: '100%'
   }
 });

@@ -23,6 +23,13 @@
     ],
     "rules": {
       "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-      "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies 
+      "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies 
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "arrow-parens": ["error", "as-needed"],
+      "array-bracket-spacing": "off",
+      "no-undef": ["error", { "typeof": false }],
+      "no-trailing-spaces":"off",
+      "implicit-arrow-linebreak":"off",
+      "react/jsx-curly-newline": [0]
     }
 }

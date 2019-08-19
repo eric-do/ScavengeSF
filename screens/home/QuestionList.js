@@ -1,19 +1,21 @@
-import React, { useEffect, useState} from "react";
-import { StyleSheet, View, FlatList } from "react-native";
-import ListBox from "../../components/ListBox";
-import QuestionContainer from "../../components/QuestionContainer";
-import { getQuestionList } from "../../api";
+import React, { useEffect, useState } from 'react';
+import { View, FlatList } from 'react-native';
+import PropTypes from 'prop-types';
+import ListBox from '../../components/ListBox';
+import QuestionContainer from '../../components/QuestionContainer';
+import { getQuestionList } from '../../api';
+import styles from './QuestionListStyle';
 
-export default (QuestionList = props => {
-  const [ questions, setQuestions ] = useState([]);
+const QuestionList = props => {
+  const [questions, setQuestions] = useState([]);
   const { navigation } = props;
+  const landmarkId = navigation.getParam('id', 1);
 
   useEffect(() => {
-    getQuestionList(navigation.getParam("id", 1), stateObj => {
-      const { questions } = stateObj;
-      setQuestions(questions);
+    getQuestionList(landmarkId, stateObj => {
+      setQuestions(stateObj.questions);
     });
-  }, []);
+  }, [landmarkId]);
 
   return (
     <View style={styles.questions}>
@@ -25,7 +27,7 @@ export default (QuestionList = props => {
           <ListBox
             key={item.id}
             pressHandler={() =>
-              navigation.navigate("Answers", { question: item })
+              navigation.navigate('Answers', { question: item })
             }
           >
             <QuestionContainer question={item} />
@@ -34,24 +36,21 @@ export default (QuestionList = props => {
       />
     </View>
   );
-});
-
-QuestionList.navigationOptions = ({ navigation }) => {
-  return {
-    title: navigation.getParam("landmark").name
-  };
 };
 
-const styles = StyleSheet.create({
-  questions: {
-    alignItems: "center",
-    flex: 1,
-    backgroundColor: "#EAF2F8"
-  },
-  text: {
-    alignSelf: "center"
-  },
-  list: {
-    width: "100%"
-  }
+QuestionList.navigationOptions = ({ navigation }) => ({
+  title: navigation.getParam('landmark').name,
 });
+
+QuestionList.defaultProps = {
+  navigation: {},
+};
+
+QuestionList.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+  }),
+};
+
+export default QuestionList;
