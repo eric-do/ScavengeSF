@@ -1,66 +1,50 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, FlatList } from 'react-native';
+import PropTypes from 'prop-types';
 import ListBox from '../../components/ListBox';
 import { getAchievementList } from '../../api';
+import styles from './AchievementListStyle';
 
-class AchievementList extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Achievements'
-  });
+const AchievementList = () => {
+  const [achievements, setAchievements] = useState(null);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      achievements: null
-    }
-  }
+  useEffect(() => {
+    getAchievementList(1, ({ achievements }) => setAchievements(achievements));
+  }, []);
 
-  componentDidMount() {
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
-      getAchievementList(1, (stateObj) => this.setState(stateObj));
-      });
-  }
+  console.log('rerender achievements');
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={achievements}
+        keyExtractor={item => item.achievementId.toString()}
+        renderItem={({ item }) => (
+          <ListBox>
+            <View style={styles.achievements}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.description}>{item.description}</Text>
+            </View>
+          </ListBox>
+        )}
+      />
+    </View>
+  );
+};
 
-  render() {
-    const achievements = this.state.achievements;
-    console.log(achievements);
-
-    return (
-      <View style={styles.container}>
-        <FlatList 
-          data={achievements}
-          keyExtractor={item => item.achievementId.toString()}
-          renderItem={({ item }) => (
-            <ListBox>
-              <View style={styles.achievements}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-              </View>
-            </ListBox>
-          )}
-        />
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#EAF2F8',
-    flex: 1
-  },
-  achievements: {
-   alignItems: 'center'
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#3498DB',
-    marginBottom: 10
-  },
-  description: {
-    fontSize: 14,
-  }
+AchievementList.navigationOptions = () => ({
+  title: 'Achievements',
 });
+
+AchievementList.defaultProps = {
+  navigation: {},
+};
+
+AchievementList.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+    addListener: PropTypes.func,
+  }),
+};
 
 export default AchievementList;

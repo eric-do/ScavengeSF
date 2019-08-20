@@ -2,15 +2,12 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 
 class OptionButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   toggleButton() {
     this.props.setAnswer(this.props.answer);
   }
 
   render() {
+    console.log(this.props);
     return (
       <TouchableOpacity onPress={() => this.toggleButton()}>
         <View style={[styles.button, this.props.active ? styles.buttonActive : null]}>

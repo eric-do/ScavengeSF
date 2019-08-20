@@ -1,89 +1,74 @@
-import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Picker } from "react-native";
-import { button, textinput } from "../../styles/global";
-import { getLocations } from "../../api";
+import React, { useEffect, useState } from 'react';
+import {
+  View, 
+  TouchableOpacity, 
+  Text,
+  Picker, 
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { button } from '../../styles/global';
+import { getLocations } from '../../api';
+import styles from './SelectLocationStyle';
 
-export default class AddQuestion extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Select Location"
-    };
+const SelectLocation = props => {
+  const [location, setLocation] = useState({});
+  const [locations, setLocations] = useState([]);
+  const { navigation } = props;
+
+  useEffect(() => {
+    getLocations(({ locations }) => {
+      setLocation(locations[0]);
+      setLocations(locations);
+    });
+  }, []);
+
+  const handlePicker = locationName => {
+    setLocation(locations.find(loc => locationName === loc.name));
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: {},
-      locations: [],
-      locationName: ""
-    };
-    this.handlePicker = this.handlePicker.bind(this);
-  }
+  return (
+    <View style={styles.container}>
+      <Text />
+      <Picker
+        selectedValue={location.name}
+        style={styles.picker}
+        onValueChange={(value, index) => handlePicker(value, index)}
+      >
+        {
+          locations.length > 0
+            ? locations.map(locationList => (
+              <Picker.Item
+                label={locationList.name}
+                value={locationList.name}
+                key={locationList.id}
+              /> 
+            )) : null
+        }
+      </Picker>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('SelectLandmark', { location })}
+      >
+        <View style={[styles.button, button]}>
+          <Text style={styles.buttonText}>Next</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
-  componentDidMount() {
-    getLocations(({ locations }) => {
-      const location = locations[0];
-      this.setState({ location, locations });
-    });
-  }
-
-  handlePicker(locationName, index) {
-    const location = this.state.locations.find(
-      location => locationName === location.name
-    );
-    this.setState({ location, locationName });
-  }
-
-  render() {
-    const { navigation } = this.props;
-
-    return (
-      <View style={styles.container}>
-        <Text />
-        <Picker
-          selectedValue={this.state.locationName}
-          style={styles.picker}
-          onValueChange={(value, index) => this.handlePicker(value, index)}
-        >
-          {this.state.locations.map(location => (
-            <Picker.Item
-              label={location.name}
-              value={location.name}
-              key={location.id}
-            />
-          ))}
-        </Picker>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("SelectLandmark", {
-              location: this.state.location
-            })
-          }
-        >
-          <View style={[styles.button, button]}>
-            <Text style={styles.buttonText}>Next</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  picker: {
-    width: "75%"
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: "#70EB92"
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16
-  }
+SelectLocation.navigationOptions = () => ({
+  title: 'Select Location',
 });
+
+SelectLocation.defaultProps = {
+  navigation: {},
+};
+
+SelectLocation.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+  }),
+};
+
+export default SelectLocation;

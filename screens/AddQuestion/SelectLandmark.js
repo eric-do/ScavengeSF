@@ -1,88 +1,73 @@
-import React, { Component } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Picker } from "react-native";
-import { button, textinput } from "../../styles/global";
-import { getLandmarks } from "../../api";
+import React, { useEffect, useState } from 'react';
+import {
+  View, TouchableOpacity, Text, Picker, 
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { button } from '../../styles/global';
+import { getLandmarks } from '../../api';
+import styles from './SelectLandmarkStyle';
 
-export default class SelectLandmark extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Select Landmark"
-    };
+const SelectLandmark = props => {
+  const [landmarks, setLandmarks] = useState([]);
+  const [landmark, setLandmark] = useState({});
+  const [landmarkName, setLandmarkName] = useState('');
+  const { navigation } = props;
+  const location = navigation.getParam('location');
+
+  useEffect(() => {
+    getLandmarks(location.id, ({ landmarks }) => {
+      setLandmark(landmarks[0]);
+      setLandmarks(landmarks);
+    });
+  }, [location.id]);
+
+  const handlePicker = landmarkName => {
+    const selectedLandmark = landmarks.find(landmark => (
+      landmarkName === landmark.name
+    ));
+    setLandmark(selectedLandmark);
+    setLandmarkName(landmarkName);
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      landmarks: [],
-      landmark: {},
-      landmarkName: ""
-    };
-  }
+  return (
+    <View style={styles.container}>
+      <Picker
+        selectedValue={landmarkName}
+        style={styles.picker}
+        onValueChange={value => handlePicker(value)}
+      >
+        {landmarks.map(landmark => (
+          <Picker.Item
+            label={landmark.name}
+            value={landmark.name}
+            key={landmark.id}
+          />
+        ))}
+      </Picker>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AddQuestion', { landmark })}
+      >
+        <View style={[styles.button, button]}>
+          <Text style={styles.buttonText}>Next</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
-  componentDidMount() {
-    const { navigation } = this.props;
-    const location = navigation.getParam("location");
-    getLandmarks(location.id, ({ landmarks }) => {
-      const landmark = landmarks[0];
-      this.setState({ landmark, landmarks });
-    });
-  }
-
-  handlePicker(landmarkName, index) {
-    const landmark = this.state.landmarks.find(
-      landmark => landmarkName === landmark.name
-    );
-    this.setState({ landmark, landmarkName });
-  }
-
-  render() {
-    const { navigation } = this.props;
-    return (
-      <View style={styles.container}>
-        <Picker
-          selectedValue={this.state.landmarkName}
-          style={styles.picker}
-          onValueChange={(value, index) => this.handlePicker(value, index)}
-        >
-          {this.state.landmarks.map(landmark => (
-            <Picker.Item
-              label={landmark.name}
-              value={landmark.name}
-              key={landmark.id}
-            />
-          ))}
-        </Picker>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("AddQuestion", {
-              landmark: this.state.landmark
-            })
-          }
-        >
-          <View style={[styles.button, button]}>
-            <Text style={styles.buttonText}>Next</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  picker: {
-    width: "75%"
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: "#70EB92"
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16
-  }
+SelectLandmark.navigationOptions = () => ({
+  title: 'Select Landmark',
 });
+
+SelectLandmark.defaultProps = {
+  navigation: {},
+};
+
+SelectLandmark.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+  }),
+};
+
+export default SelectLandmark;
