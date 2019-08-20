@@ -21,25 +21,27 @@ const AnswerList = props => {
   const [answer, setAnswer] = useState(null);
   const [correct, setCorrect] = useState(null);
   const [direction, setDirection] = useState(0);
-  const userId = getUserToken();
   const question = navigation.getParam('question', null);
+  let userId;
 
   useEffect(() => {
     getAnswerList(question.id, stateObj => {
       setAnswers(stateObj.answers);
     });
-
-    getUserVote(userId, question.id, stateObj => {
-      setDirection(stateObj.direction);
-    });
-  }, [userId, question.id]);
-
+    const getVote = async () => {
+      userId = await getUserToken();
+      getUserVote(userId, question.id, stateObj => {
+        setDirection(stateObj.direction);
+      });
+    };
+    getVote();
+  }, [question.id, direction, answer]);
+  
   const handleModalVisibility = isVisible => {
     setModalVisible(isVisible);
   };
 
   const updateAnswer = newAnswer => {
-    console.log(answer);
     setAnswer(answer && answer.id === newAnswer.id ? null : newAnswer); 
   };
 
