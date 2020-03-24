@@ -10,3 +10,9 @@ web-build/
 web-report/
 package-lock.json
 firebase.js
+backend/node_modules
+backend/package-lock.json
+backend/public/dist/bundle.js
+backend/.env
+backend/scavenger-8f9b4-firebase-adminsdk-d10zx-e290abffe3.json
+backend/.nyc_output
